@@ -1,0 +1,151 @@
+import { useState, useEffect } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
+import { Menu, X, GraduationCap, LogIn } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+
+const navLinks = [
+  { label: "Home", to: "/" },
+  { label: "Courses", to: "/courses" },
+  { label: "Test Series", to: "/test-series" },
+  { label: "About", to: "/about" },
+  { label: "Gallery", to: "/gallery" },
+  { label: "Contact", to: "/contact" },
+];
+
+const Navbar = () => {
+  const [scrolled, setScrolled] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 20);
+    window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  useEffect(() => setMobileOpen(false), [location]);
+
+  const goToLogin = (role: "student" | "admin") => {
+    navigate(`/login?role=${role}`);
+  };
+
+  return (
+    <motion.nav
+      initial={{ y: -80 }}
+      animate={{ y: 0 }}
+      transition={{ duration: 0.5, ease: "easeOut" }}
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        scrolled ? "bg-background/95 shadow-md" : "bg-background/80 backdrop-blur-lg"
+      }`}
+    >
+      <div className="container mx-auto flex items-center justify-between h-16 px-4">
+        <Link to="/" className="flex items-center gap-2">
+          <GraduationCap className="h-8 w-8 text-primary" />
+          <span className="text-xl font-bold text-foreground">
+            Saraswati Classes
+          </span>
+        </Link>
+
+        <div className="hidden md:flex items-center gap-6">
+          {navLinks.map((l) => (
+            <Link
+              key={l.to}
+              to={l.to}
+              className={`text-sm font-medium transition-colors hover:text-primary ${
+                location.pathname === l.to
+                  ? "text-primary"
+                  : "text-muted-foreground"
+              }`}
+            >
+              {l.label}
+            </Link>
+          ))}
+
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button size="sm" variant="outline" className="gap-2">
+                <LogIn className="h-4 w-4" />
+                Login
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-40">
+              <DropdownMenuItem onClick={() => goToLogin("student")}>
+                Student Login
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => goToLogin("admin")}>
+                Admin Login
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
+
+        <button
+          className="md:hidden p-2 text-foreground"
+          onClick={() => setMobileOpen(!mobileOpen)}
+          aria-label="Toggle menu"
+        >
+          {mobileOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+        </button>
+      </div>
+
+      {mobileOpen && (
+        <motion.div
+          initial={{ opacity: 0, height: 0 }}
+          animate={{ opacity: 1, height: "auto" }}
+          exit={{ opacity: 0, height: 0 }}
+          className="md:hidden bg-background/95 border-t backdrop-blur-lg"
+        >
+          <div className="flex flex-col p-4 gap-3">
+            {navLinks.map((l) => (
+              <Link
+                key={l.to}
+                to={l.to}
+                className={`text-sm font-medium py-2 ${
+                  location.pathname === l.to
+                    ? "text-primary"
+                    : "text-muted-foreground"
+                }`}
+              >
+                {l.label}
+              </Link>
+            ))}
+
+            <div className="pt-2 border-t">
+              <p className="text-xs text-muted-foreground mb-2 font-medium">
+                Login
+              </p>
+              <div className="flex flex-col gap-2">
+                <Button
+                  size="sm"
+                  variant="outline"
+                  className="w-full justify-start"
+                  onClick={() => goToLogin("student")}
+                >
+                  Student Login
+                </Button>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  className="w-full justify-start"
+                  onClick={() => goToLogin("admin")}
+                >
+                  Admin Login
+                </Button>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+      )}
+    </motion.nav>
+  );
+};
+
+export default Navbar;
