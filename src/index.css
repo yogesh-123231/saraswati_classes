@@ -55,11 +55,14 @@
 
 @layer base {
   * {
-    @apply border-border;
+    @apply border-gray-200;
   }
+
   body {
-    @apply bg-background text-foreground font-sans;
+    @apply bg-white text-gray-900 font-sans;
+    font-family: 'Poppins', sans-serif;
   }
+
   h1, h2, h3, h4, h5, h6 {
     @apply font-semibold tracking-tight;
   }
@@ -67,12 +70,14 @@
 
 @layer utilities {
   .text-gradient {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-primary to-sky-600;
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-sky-500 to-sky-700;
   }
+
   .glass {
     @apply bg-white/80 backdrop-blur-md;
   }
+
   .card-hover {
-    @apply transition-all duration-300 hover:shadow-lg hover:-translate-y-1;
+    @apply rounded-xl shadow-sm transition-shadow duration-200 hover:shadow-md;
   }
 }

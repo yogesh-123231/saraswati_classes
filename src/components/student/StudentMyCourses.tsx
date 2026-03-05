@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Lock } from "lucide-react";
+import { ExternalLink } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useApp } from "@/context/AppContext";
@@ -20,8 +20,8 @@ const StudentMyCourses = () => {
           My Courses
         </h1>
         <p className="text-sm text-muted-foreground">
-          View your assigned courses and their modules. Video lessons are locked
-          placeholders and will be unlocked by the admin later.
+          View your assigned courses and directly access their chapter videos and
+          chapter tests.
         </p>
       </div>
 
@@ -61,32 +61,59 @@ const StudentMyCourses = () => {
                   </div>
 
                   <div className="mt-4 space-y-2">
-                    {course.chapters.map((ch, idx) => (
+                    {course.chapters.map((ch: any, idx: number) => {
+                      const chapterNumber =
+                        typeof ch.chapterNumber === "number"
+                          ? ch.chapterNumber
+                          : idx + 1;
+                      const chapterDescription =
+                        ch.chapterDescription ?? ch.description ?? "";
+                      const youtubeLink = ch.youtubeLink ?? ch.videoUrl ?? "";
+                      const testLink = ch.testLink ?? "";
+
+                      return (
                       <div
                         key={idx}
                         className="flex items-start gap-3 rounded-lg border border-dashed bg-muted/60 px-3 py-2"
                       >
                         <span className="text-xs font-semibold text-primary mt-0.5">
-                          {idx + 1}.
+                          {chapterNumber}.
                         </span>
                         <div className="flex-1">
-                          <p className="text-sm font-medium flex items-center gap-2">
-                            {ch.title}
-                            <Lock className="h-3 w-3 text-primary" />
-                          </p>
-                          {ch.description && (
+                          <p className="text-sm font-medium">{`Chapter ${chapterNumber}`}</p>
+                          {chapterDescription && (
                             <p className="text-xs text-muted-foreground mt-0.5">
-                              {ch.description}
+                              {chapterDescription}
                             </p>
                           )}
-                          <p className="text-[11px] text-muted-foreground mt-1">
-                            Video placeholder – a private YouTube link will be
-                            embedded here once the admin uploads and grants
-                            access.
-                          </p>
+                          <div className="mt-2 flex flex-wrap gap-2">
+                            {youtubeLink && (
+                              <a
+                                href={youtubeLink}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center gap-1 text-xs font-medium text-primary underline underline-offset-2"
+                              >
+                                Watch on YouTube
+                                <ExternalLink className="h-3 w-3" />
+                              </a>
+                            )}
+                            {testLink && (
+                              <a
+                                href={testLink}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center gap-1 text-xs font-medium text-primary underline underline-offset-2"
+                              >
+                                Open Chapter Test
+                                <ExternalLink className="h-3 w-3" />
+                              </a>
+                            )}
+                          </div>
                         </div>
                       </div>
-                    ))}
+                      );
+                    })}
 
                     {course.chapters.length === 0 && (
                       <p className="text-xs text-muted-foreground">

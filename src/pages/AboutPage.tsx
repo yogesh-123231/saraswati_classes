@@ -1,4 +1,3 @@
-import { motion } from "framer-motion";
 import { Users, Award, BookOpen, Target, PieChart } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import Layout from "@/components/Layout";
@@ -6,17 +5,13 @@ import { testimonials } from "@/data/mockData";
 
 const AboutPage = () => (
   <Layout>
-    <section className="py-12">
-      <div className="container mx-auto px-4 space-y-12">
+    <section className="py-12 md:py-16">
+      <div className="space-y-12 md:space-y-16">
         {/* Mission Statement */}
-        <div>
-          <motion.h1
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-3xl font-bold mb-2"
-          >
+        <div className="space-y-2">
+          <h1 className="text-3xl md:text-4xl font-bold">
             About Saraswati Classes
-          </motion.h1>
+          </h1>
           <p className="text-muted-foreground max-w-2xl">
             Saraswati Classes is a focused coaching institute dedicated to
             helping students achieve strong board results and competitive exam
@@ -26,7 +21,7 @@ const AboutPage = () => (
 
         {/* Results Overview */}
         <div className="space-y-6">
-          <h2 className="text-2xl font-bold">Results Overview</h2>
+          <h2 className="text-2xl font-semibold">Results Overview</h2>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
               {
@@ -49,51 +44,46 @@ const AboutPage = () => (
                 label: "Dedicated Faculty",
                 desc: "Experienced and approachable teachers",
               },
-            ].map((s, i) => (
-              <motion.div
-                key={s.label}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.08 }}
-              >
-                <Card className="text-center h-full">
-                  <CardContent className="p-6">
-                    <s.icon className="h-10 w-10 text-primary mx-auto mb-3" />
-                    <h3 className="font-semibold">{s.label}</h3>
-                    <p className="text-sm text-muted-foreground">{s.desc}</p>
-                  </CardContent>
-                </Card>
-              </motion.div>
+            ].map((s) => (
+              <Card key={s.label} className="text-center h-full rounded-xl shadow-sm">
+                <CardContent className="p-6">
+                  <div className="flex justify-center mb-3">
+                    <s.icon className="h-10 w-10 text-primary shrink-0" />
+                  </div>
+                  <h3 className="font-semibold">{s.label}</h3>
+                  <p className="text-sm text-muted-foreground mt-1">{s.desc}</p>
+                </CardContent>
+              </Card>
             ))}
           </div>
         </div>
 
         {/* Success Ratio Chart placeholder + Mission */}
         <div className="grid md:grid-cols-2 gap-8 items-start">
-          <div>
-            <h2 className="text-2xl font-bold mb-4">Our Mission</h2>
-            <p className="text-muted-foreground mb-4">
+          <div className="space-y-4">
+            <h2 className="text-2xl font-semibold">Our Mission</h2>
+            <p className="text-muted-foreground">
               To provide high-quality, disciplined coaching that empowers every
               student to reach his or her potential. We focus on clarity of
               concepts, regular practice and honest feedback to build real
               confidence.
             </p>
-            <h2 className="text-2xl font-bold mb-4">Our Approach</h2>
+            <h2 className="text-2xl font-semibold">Our Approach</h2>
             <p className="text-muted-foreground">
               We combine clear classroom teaching with test series, doubt
               sessions and personal mentoring. Small batch sizes allow teachers
               to track individual progress and correct mistakes early.
             </p>
           </div>
-          <Card className="overflow-hidden">
+          <Card className="overflow-hidden rounded-xl shadow-sm">
             <CardContent className="p-6">
-              <div className="flex items-center gap-3 mb-3">
-                <PieChart className="h-5 w-5 text-primary" />
+              <div className="flex items-center gap-2 mb-3">
+                <PieChart className="h-5 w-5 text-primary shrink-0" />
                 <div>
                   <p className="font-semibold text-sm">
                     Success Ratio Chart (Placeholder)
                   </p>
-                  <p className="text-xs text-muted-foreground">
+                  <p className="text-xs text-muted-foreground mt-0.5">
                     This area will display a live success ratio chart once
                     backend analytics are connected.
                   </p>
@@ -110,8 +100,8 @@ const AboutPage = () => (
         </div>
 
         {/* Why Choose Saraswati Classes */}
-        <div className="space-y-4">
-          <h2 className="text-2xl font-bold">Why Choose Saraswati Classes</h2>
+        <div className="space-y-6">
+          <h2 className="text-2xl font-semibold">Why Choose Saraswati Classes</h2>
           <div className="grid md:grid-cols-3 gap-6">
             {[
               {
@@ -127,10 +117,10 @@ const AboutPage = () => (
                 desc: "Board-style papers and entrance pattern tests to build real exam temperament.",
               },
             ].map((b) => (
-              <Card key={b.title} className="h-full">
-                <CardContent className="p-5">
-                  <h3 className="font-semibold mb-2 text-sm">{b.title}</h3>
-                  <p className="text-sm text-muted-foreground">{b.desc}</p>
+              <Card key={b.title} className="h-full rounded-xl shadow-sm">
+                <CardContent className="p-6">
+                  <h3 className="font-semibold text-sm">{b.title}</h3>
+                  <p className="text-sm text-muted-foreground mt-2">{b.desc}</p>
                 </CardContent>
               </Card>
             ))}
@@ -138,12 +128,12 @@ const AboutPage = () => (
         </div>
 
         {/* Student Testimonials */}
-        <div className="space-y-4">
-          <h2 className="text-2xl font-bold">Student Testimonials</h2>
+        <div className="space-y-6">
+          <h2 className="text-2xl font-semibold">Student Testimonials</h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {testimonials.map((t, index) => (
-              <Card key={index} className="h-full">
-                <CardContent className="p-5 flex flex-col items-center text-center gap-3">
+              <Card key={index} className="h-full rounded-xl shadow-sm">
+                <CardContent className="p-6 flex flex-col items-center text-center gap-3">
                   <img
                     src={t.avatar}
                     alt={t.name}

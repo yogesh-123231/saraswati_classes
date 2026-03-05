@@ -70,21 +70,19 @@ const GalleryPage = () => {
 
   return (
     <Layout>
-      <section className="py-12">
-        <div className="container mx-auto px-4">
-          <motion.h1
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-3xl font-bold mb-2"
-          >
-            Gallery
-          </motion.h1>
-          <p className="text-muted-foreground mb-8 max-w-2xl">
-            A glimpse into classrooms, achievements and events at Saraswati
-            Classes.
-          </p>
+      <section className="py-12 md:py-16">
+        <div className="space-y-8">
+          <div className="space-y-2">
+            <h1 className="text-3xl md:text-4xl font-bold">
+              Gallery
+            </h1>
+            <p className="text-muted-foreground max-w-2xl">
+              A glimpse into classrooms, achievements and events at Saraswati
+              Classes.
+            </p>
+          </div>
 
-          <div className="flex flex-wrap gap-2 mb-8">
+          <div className="flex flex-wrap items-center gap-x-2 gap-y-2">
             <button
               type="button"
               onClick={() => setActiveCategory("All")}
@@ -116,7 +114,7 @@ const GalleryPage = () => {
             {filtered.map((img) => (
               <Card
                 key={img.id}
-                className="group cursor-pointer overflow-hidden"
+                className="group cursor-pointer overflow-hidden rounded-xl shadow-sm transition-shadow hover:shadow-md"
                 onClick={() => setSelected(img)}
               >
                 <CardContent className="p-0 relative">

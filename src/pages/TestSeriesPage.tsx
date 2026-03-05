@@ -9,12 +9,11 @@ import EnrollmentModal from "@/components/EnrollmentModal";
 import { useApp } from "@/context/AppContext";
 import { useAuth } from "@/context/AuthContext";
 
-const fadeUp = {
-  hidden: { opacity: 0, y: 30 },
+const fadeIn = {
+  hidden: { opacity: 0 },
   visible: (i: number) => ({
     opacity: 1,
-    y: 0,
-    transition: { delay: i * 0.1, duration: 0.4 },
+    transition: { delay: i * 0.05, duration: 0.3 },
   }),
 };
 
@@ -32,19 +31,16 @@ const TestSeriesPage = () => {
 
   return (
     <Layout>
-      <section className="py-12">
-        <div className="container mx-auto px-4">
-          <motion.h1
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="text-3xl font-bold mb-2"
-          >
-            Test Series
-          </motion.h1>
-
-          <p className="text-muted-foreground mb-8">
-            Practice with real exam-pattern tests and boost your confidence
-          </p>
+      <section className="py-12 md:py-16">
+        <div className="space-y-8">
+          <div className="space-y-2">
+            <h1 className="text-3xl md:text-4xl font-bold">
+              Test Series
+            </h1>
+            <p className="text-muted-foreground">
+              Practice with real exam-pattern tests and boost your confidence
+            </p>
+          </div>
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {testSeries.map((ts, i) => (
@@ -54,9 +50,9 @@ const TestSeriesPage = () => {
                 initial="hidden"
                 whileInView="visible"
                 viewport={{ once: true }}
-                variants={fadeUp}
+                variants={fadeIn}
               >
-                <Card className="relative card-hover h-full flex flex-col overflow-hidden">
+                <Card className="relative card-hover h-full flex flex-col rounded-xl shadow-sm overflow-hidden">
                   {!(
                     currentStudent &&
                     currentStudent.approvedTestSeries.includes(ts.id)
@@ -75,8 +71,8 @@ const TestSeriesPage = () => {
                     className="w-full h-44 object-cover"
                   />
 
-                  <CardContent className="p-5 flex flex-col flex-1 space-y-3">
-                    <h3 className="font-semibold text-lg mb-1 leading-snug">
+                  <CardContent className="p-6 flex flex-col flex-1 space-y-3">
+                    <h3 className="font-semibold text-lg leading-snug">
                       {ts.title}
                     </h3>
                     <p className="text-xs text-muted-foreground">
@@ -87,8 +83,8 @@ const TestSeriesPage = () => {
                     </p>
 
                     <div className="flex items-center justify-between text-sm font-medium">
-                      <span className="inline-flex items-center gap-1 text-primary">
-                        <IndianRupee className="h-3 w-3" />
+                      <span className="inline-flex items-center gap-2 text-primary">
+                        <IndianRupee className="h-3 w-3 shrink-0" />
                         {ts.price}
                       </span>
                     </div>

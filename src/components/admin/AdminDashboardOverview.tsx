@@ -6,18 +6,18 @@ const AdminDashboardOverview = () => {
   const { courses, testSeries, students, enrollments } = useApp();
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-xl md:text-2xl font-semibold mb-1">Dashboard</h1>
-        <p className="text-sm text-muted-foreground">
+    <div className="space-y-8">
+      <div className="space-y-2">
+        <h1 className="text-3xl md:text-4xl font-bold">Dashboard</h1>
+        <p className="text-muted-foreground">
           High-level snapshot of courses, students, test series and inquiries.
         </p>
       </div>
 
       <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <Card>
-          <CardContent className="p-4 flex items-center gap-3">
-            <div className="h-9 w-9 rounded-full bg-primary/10 flex items-center justify-center">
+        <Card className="rounded-xl shadow-sm">
+          <CardContent className="p-6 flex items-center gap-2">
+            <div className="h-9 w-9 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
               <BookOpen className="h-4 w-4 text-primary" />
             </div>
             <div>
@@ -26,9 +26,9 @@ const AdminDashboardOverview = () => {
             </div>
           </CardContent>
         </Card>
-        <Card>
-          <CardContent className="p-4 flex items-center gap-3">
-            <div className="h-9 w-9 rounded-full bg-primary/10 flex items-center justify-center">
+        <Card className="rounded-xl shadow-sm">
+          <CardContent className="p-6 flex items-center gap-2">
+            <div className="h-9 w-9 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
               <ClipboardList className="h-4 w-4 text-primary" />
             </div>
             <div>
@@ -37,9 +37,9 @@ const AdminDashboardOverview = () => {
             </div>
           </CardContent>
         </Card>
-        <Card>
-          <CardContent className="p-4 flex items-center gap-3">
-            <div className="h-9 w-9 rounded-full bg-primary/10 flex items-center justify-center">
+        <Card className="rounded-xl shadow-sm">
+          <CardContent className="p-6 flex items-center gap-2">
+            <div className="h-9 w-9 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
               <Users className="h-4 w-4 text-primary" />
             </div>
             <div>
@@ -48,9 +48,9 @@ const AdminDashboardOverview = () => {
             </div>
           </CardContent>
         </Card>
-        <Card>
-          <CardContent className="p-4 flex items-center gap-3">
-            <div className="h-9 w-9 rounded-full bg-primary/10 flex items-center justify-center">
+        <Card className="rounded-xl shadow-sm">
+          <CardContent className="p-6 flex items-center gap-2">
+            <div className="h-9 w-9 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
               <BarChart2 className="h-4 w-4 text-primary" />
             </div>
             <div>
@@ -64,8 +64,8 @@ const AdminDashboardOverview = () => {
       </div>
 
       <div className="grid lg:grid-cols-2 gap-6">
-        <Card>
-          <CardContent className="p-5 space-y-3">
+        <Card className="rounded-xl shadow-sm">
+          <CardContent className="p-6 space-y-4">
             <p className="font-semibold text-sm">Recent Inquiries</p>
             <p className="text-xs text-muted-foreground">
               This is a read-only, placeholder snapshot. Detailed management is available in the Inquiry Management section.
@@ -94,8 +94,8 @@ const AdminDashboardOverview = () => {
           </CardContent>
         </Card>
 
-        <Card>
-          <CardContent className="p-5">
+        <Card className="rounded-xl shadow-sm">
+          <CardContent className="p-6">
             <p className="font-semibold text-sm mb-2">Planned Analytics Area</p>
             <p className="text-xs text-muted-foreground mb-4">
               This space is reserved for future charts such as success ratios, enrolment trends and test performance once backend reporting is connected.

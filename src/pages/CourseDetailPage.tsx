@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import { motion } from "framer-motion";
 import {
   ArrowLeft,
   BookOpen,
@@ -35,7 +34,7 @@ const CourseDetailPage = () => {
   if (!course)
     return (
       <Layout>
-        <div className="container mx-auto px-4 py-20 text-center">
+        <div className="py-20 text-center space-y-4">
           <h1 className="text-2xl font-bold">Course not found</h1>
           <Link to="/courses">
             <Button className="mt-4">Back to Courses</Button>
@@ -46,34 +45,30 @@ const CourseDetailPage = () => {
 
   return (
     <Layout>
-      <div className="container mx-auto px-4 py-10">
+      <div className="py-12 md:py-16 space-y-8">
         <Link
           to="/courses"
-          className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-primary mb-6"
+          className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-primary"
         >
-          <ArrowLeft className="h-4 w-4" /> Back to Courses
+          <ArrowLeft className="h-4 w-4 shrink-0" /> Back to Courses
         </Link>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="grid lg:grid-cols-3 gap-8"
-        >
+        <div className="grid lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2 space-y-8">
-            <div>
-              <div className="flex flex-wrap gap-2 mb-3">
+            <div className="space-y-4">
+              <div className="flex flex-wrap items-center gap-2">
                 <Badge variant="secondary">{course.category}</Badge>
                 <Badge variant="outline">{course.mode}</Badge>
               </div>
 
-              <h1 className="text-3xl font-bold mb-3">{course.title}</h1>
-              <p className="text-muted-foreground mb-4">
+              <h1 className="text-3xl md:text-4xl font-bold">{course.title}</h1>
+              <p className="text-muted-foreground">
                 {course.fullDescription}
               </p>
 
               <div className="grid sm:grid-cols-2 gap-4 text-sm">
-                <div className="flex items-start gap-2">
-                  <Clock className="h-4 w-4 text-primary mt-0.5" />
+                <div className="flex items-center gap-2">
+                  <Clock className="h-4 w-4 text-primary shrink-0" />
                   <div>
                     <p className="font-semibold">Timing & Schedule</p>
                     <p className="text-muted-foreground">
@@ -81,8 +76,8 @@ const CourseDetailPage = () => {
                     </p>
                   </div>
                 </div>
-                <div className="flex items-start gap-2">
-                  <BookOpen className="h-4 w-4 text-primary mt-0.5" />
+                <div className="flex items-center gap-2">
+                  <BookOpen className="h-4 w-4 text-primary shrink-0" />
                   <div>
                     <p className="font-semibold">Subjects Covered</p>
                     <p className="text-muted-foreground">
@@ -92,8 +87,8 @@ const CourseDetailPage = () => {
                     </p>
                   </div>
                 </div>
-                <div className="flex items-start gap-2">
-                  <Clock className="h-4 w-4 text-primary mt-0.5" />
+                <div className="flex items-center gap-2">
+                  <Clock className="h-4 w-4 text-primary shrink-0" />
                   <div>
                     <p className="font-semibold">Course Duration</p>
                     <p className="text-muted-foreground">
@@ -101,8 +96,8 @@ const CourseDetailPage = () => {
                     </p>
                   </div>
                 </div>
-                <div className="flex items-start gap-2">
-                  <IndianRupee className="h-4 w-4 text-primary mt-0.5" />
+                <div className="flex items-center gap-2">
+                  <IndianRupee className="h-4 w-4 text-primary shrink-0" />
                   <div>
                     <p className="font-semibold">Price per Subject</p>
                     <p className="text-muted-foreground">
@@ -172,7 +167,7 @@ const CourseDetailPage = () => {
           </div>
 
           <div>
-            <Card className="sticky top-20 overflow-hidden">
+            <Card className="sticky top-20 overflow-hidden rounded-xl shadow-sm">
               <img
                 src={course.image}
                 alt={course.title}
@@ -209,7 +204,7 @@ const CourseDetailPage = () => {
               </CardContent>
             </Card>
           </div>
-        </motion.div>
+        </div>
       </div>
 
       <EnrollmentModal

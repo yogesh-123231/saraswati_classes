@@ -10,12 +10,11 @@ import EnrollmentModal from "@/components/EnrollmentModal";
 import { useApp } from "@/context/AppContext";
 import { useAuth } from "@/context/AuthContext";
 
-const fadeUp = {
-  hidden: { opacity: 0, y: 30 },
+const fadeIn = {
+  hidden: { opacity: 0 },
   visible: (i: number) => ({
     opacity: 1,
-    y: 0,
-    transition: { delay: i * 0.05, duration: 0.4 },
+    transition: { delay: i * 0.05, duration: 0.3 },
   }),
 };
 
@@ -39,21 +38,19 @@ const CoursesPage = () => {
 
   return (
     <Layout>
-      <section className="py-12">
-        <div className="container mx-auto px-4">
-          <motion.h1
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="text-3xl font-bold mb-2"
-          >
-            Our Courses
-          </motion.h1>
-          <p className="text-muted-foreground mb-8 max-w-2xl">
-            Carefully designed batches for CBSE, SSC and Science with clear
-            timings, days and transparent per-subject fees.
-          </p>
+      <section className="py-12 md:py-16">
+        <div className="space-y-8">
+          <div className="space-y-2">
+            <h1 className="text-3xl md:text-4xl font-bold">
+              Our Courses
+            </h1>
+            <p className="text-muted-foreground max-w-2xl">
+              Carefully designed batches for CBSE, SSC and Science with clear
+              timings, days and transparent per-subject fees.
+            </p>
+          </div>
 
-          <div className="flex flex-wrap gap-2 mb-8">
+          <div className="flex flex-wrap items-center gap-x-2 gap-y-2">
             {categories.map((c) => (
               <Button
                 key={c}
@@ -74,15 +71,15 @@ const CoursesPage = () => {
                 initial="hidden"
                 whileInView="visible"
                 viewport={{ once: true }}
-                variants={fadeUp}
+                variants={fadeIn}
               >
-                <Card className="card-hover h-full flex flex-col overflow-hidden">
+                <Card className="card-hover h-full flex flex-col rounded-xl shadow-sm overflow-hidden">
                   <img
                     src={course.image}
                     alt={course.title}
                     className="w-full h-40 object-cover"
                   />
-                  <CardContent className="p-5 flex flex-col flex-1 space-y-3">
+                  <CardContent className="p-6 flex flex-col flex-1 space-y-3">
                     <div className="flex items-center gap-2">
                       <Badge variant="secondary">{course.category}</Badge>
                       <Badge variant="outline">{course.mode}</Badge>
@@ -100,8 +97,8 @@ const CoursesPage = () => {
                     </p>
 
                     <div className="flex items-center justify-between text-sm font-medium">
-                      <span className="inline-flex items-center gap-1 text-primary">
-                        <IndianRupee className="h-3 w-3" />
+                      <span className="inline-flex items-center gap-2 text-primary">
+                        <IndianRupee className="h-3 w-3 shrink-0" />
                         {course.pricePerSubject.toLocaleString("en-IN")}{" "}
                         <span className="text-xs text-muted-foreground">
                           / subject

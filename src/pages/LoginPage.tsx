@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -36,14 +35,16 @@ const LoginPage = () => {
 
   return (
     <Layout>
-      <div className="min-h-[80vh] flex items-center justify-center px-4">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="w-full max-w-md">
-          <Card>
-            <CardContent className="p-8">
-              <div className="text-center mb-6">
-                <GraduationCap className="h-12 w-12 text-primary mx-auto mb-2" />
-                <h1 className="text-2xl font-bold">Login</h1>
-                <p className="text-sm text-muted-foreground">Sign in as Admin or Student</p>
+      <div className="py-12 md:py-16 min-h-[70vh] flex items-center justify-center">
+        <div className="w-full max-w-md">
+          <Card className="rounded-xl shadow-sm">
+            <CardContent className="p-6 md:p-8">
+              <div className="text-center mb-6 space-y-2">
+                <div className="flex justify-center">
+                  <GraduationCap className="h-12 w-12 text-primary shrink-0" />
+                </div>
+                <h1 className="text-3xl md:text-4xl font-bold">Login</h1>
+                <p className="text-muted-foreground">Sign in as Admin or Student</p>
               </div>
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
@@ -60,7 +61,7 @@ const LoginPage = () => {
               <p className="text-xs text-muted-foreground text-center mt-4">Admin: admin@saraswaticlasses.com / admin123</p>
             </CardContent>
           </Card>
-        </motion.div>
+        </div>
       </div>
     </Layout>
   );

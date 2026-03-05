@@ -16,7 +16,7 @@ import Layout from "@/components/Layout";
 import EnrollmentModal from "@/components/EnrollmentModal";
 import { useApp } from "@/context/AppContext";
 import { testimonials } from "@/data/mockData";
-import heroStudentsImg from "@/assets/Screenshot 2026-02-24 165054.png";
+import HomeBannerCarousel from "@/components/banner/HomeBannerCarousel";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
@@ -73,7 +73,7 @@ const Index = () => {
         {/* Hero Poster */}
         {enabledPosters.length > 0 && (
           <div className="pointer-events-none absolute inset-x-0 top-4 md:top-6 z-20">
-            <div className="pointer-events-auto container mx-auto px-4">
+            <div className="pointer-events-auto max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
               <div
                 className="relative group"
                 onTouchStart={(e) => (touchStartXRef.current = e.touches[0].clientX)}
@@ -139,16 +139,17 @@ const Index = () => {
         )}
 
         {/* Hero content */}
-        <div className="container mx-auto px-4 pt-44 pb-20 md:pt-52 md:pb-28 relative z-10">
-          <div className="grid md:grid-cols-2 gap-10 items-center">
+        <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 pt-44 pb-20 md:pt-52 md:pb-28 relative z-10">
+          <div className="grid md:grid-cols-2 lg:grid-cols-[minmax(0,2fr)_minmax(0,1.3fr)] gap-10 items-center">
             <motion.div
-              initial={{ opacity: 0, x: -40 }}
-              animate={{ opacity: 1, x: 0 }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.4 }}
             >
-              <p className="inline-flex items-center rounded-full bg-white/10 px-3 py-1 text-xs font-medium backdrop-blur">
+              <p className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-xs font-medium backdrop-blur">
                 Premium coaching for CBSE • SSC • JEE • NEET • CET
               </p>
-              <h1 className="mt-4 text-4xl md:text-5xl font-bold leading-tight">
+              <h1 className="mt-4 text-3xl md:text-4xl font-bold leading-tight">
                 A focused coaching institute
                 <span className="block text-sky-300">
                   for serious school & competitive prep.
@@ -178,41 +179,54 @@ const Index = () => {
               </div>
             </motion.div>
 
-            <motion.div
-              initial={{ opacity: 0, x: 40 }}
-              animate={{ opacity: 1, x: 0 }}
-              className="relative"
-            >
-              <div className="absolute inset-0 rounded-3xl bg-sky-500/20 blur-3xl" />
-              <div className="relative rounded-3xl bg-background/10 border border-white/10 backdrop-blur-xl shadow-2xl overflow-hidden">
-                <img
-                  src={heroStudentsImg}
-                  alt="Students at Saraswati Classes"
-                  className="w-full h-full object-cover"
-                />
+            <div className="relative rounded-3xl bg-background/5 border border-white/10 backdrop-blur-xl shadow-2xl px-6 py-5 space-y-4">
+              <p className="text-xs font-semibold text-sky-100/80 uppercase tracking-wide">
+                Results Snapshot
+              </p>
+              <div className="grid grid-cols-2 gap-4 text-sm">
+                <div>
+                  <p className="text-2xl font-bold text-sky-200">95%+</p>
+                  <p className="text-sky-100/80">Board exam success rate</p>
+                </div>
+                <div>
+                  <p className="text-2xl font-bold text-sky-200">50+</p>
+                  <p className="text-sky-100/80">Students in top merit lists</p>
+                </div>
+                <div>
+                  <p className="text-2xl font-bold text-sky-200">10+</p>
+                  <p className="text-sky-100/80">Years of focused teaching</p>
+                </div>
+                <div>
+                  <p className="text-2xl font-bold text-sky-200">4</p>
+                  <p className="text-sky-100/80">Dedicated test series tracks</p>
+                </div>
               </div>
-            </motion.div>
+            </div>
           </div>
         </div>
       </section>
 
+      <HomeBannerCarousel />
+
       {/* Programs We Offer */}
-      <section className="py-16 bg-background">
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center mb-4">
-            Programs We Offer
-          </h2>
-          <p className="text-muted-foreground text-center mb-10 max-w-2xl mx-auto">
-            Structured programs across foundation, science streams and
-            competitive exam preparation designed for consistent, year-long
-            performance.
-          </p>
+      <section className="py-12 md:py-16 bg-background">
+        <div className="space-y-8">
+          <div className="text-center space-y-2">
+            <h2 className="text-2xl font-semibold">
+              Programs We Offer
+            </h2>
+            <p className="text-muted-foreground max-w-2xl mx-auto">
+              Structured programs across foundation, science streams and
+              competitive exam preparation designed for consistent, year-long
+              performance.
+            </p>
+          </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <Card className="card-hover">
+            <Card className="card-hover rounded-xl shadow-sm">
               <CardContent className="p-6">
-                <div className="flex items-center gap-3 mb-3">
-                  <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-sky-100 text-sky-600">
+                <div className="flex items-center gap-2 mb-3">
+                  <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-sky-100 text-sky-600 shrink-0">
                     <BookOpen className="h-5 w-5" />
                   </span>
                   <h3 className="font-semibold text-lg">Foundation Courses</h3>
@@ -230,10 +244,10 @@ const Index = () => {
               </CardContent>
             </Card>
 
-            <Card className="card-hover">
+            <Card className="card-hover rounded-xl shadow-sm">
               <CardContent className="p-6">
-                <div className="flex items-center gap-3 mb-3">
-                  <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-sky-100 text-sky-600">
+                <div className="flex items-center gap-2 mb-3">
+                  <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-sky-100 text-sky-600 shrink-0">
                     <Monitor className="h-5 w-5" />
                   </span>
                   <h3 className="font-semibold text-lg">
@@ -253,10 +267,10 @@ const Index = () => {
               </CardContent>
             </Card>
 
-            <Card className="card-hover">
+            <Card className="card-hover rounded-xl shadow-sm">
               <CardContent className="p-6">
-                <div className="flex items-center gap-3 mb-3">
-                  <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-emerald-100 text-emerald-600">
+                <div className="flex items-center gap-2 mb-3">
+                  <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-emerald-100 text-emerald-600 shrink-0">
                     <Stethoscope className="h-5 w-5" />
                   </span>
                   <h3 className="font-semibold text-lg">
@@ -276,10 +290,10 @@ const Index = () => {
               </CardContent>
             </Card>
 
-            <Card className="card-hover">
+            <Card className="card-hover rounded-xl shadow-sm">
               <CardContent className="p-6">
-                <div className="flex items-center gap-3 mb-3">
-                  <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-indigo-100 text-indigo-600">
+                <div className="flex items-center gap-2 mb-3">
+                  <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-indigo-100 text-indigo-600 shrink-0">
                     <Calculator className="h-5 w-5" />
                   </span>
                   <h3 className="font-semibold text-lg">CET Crash Course</h3>
@@ -301,26 +315,27 @@ const Index = () => {
       </section>
 
       {/* Explore Courses */}
-      <section className="py-16 bg-secondary/40">
-        <div className="container mx-auto px-4">
-          <div className="flex items-center justify-between gap-4 mb-6">
-            <div>
-              <h2 className="text-3xl font-bold">Explore Courses</h2>
+      <section className="py-12 md:py-16 bg-secondary/40">
+        <div className="space-y-8">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div className="space-y-1">
+              <h2 className="text-2xl font-semibold">Explore Courses</h2>
               <p className="text-muted-foreground">
                 A quick look at some of our key batches for this academic year.
               </p>
             </div>
             <Link to="/courses">
-              <Button variant="outline" size="sm" className="gap-1">
-                View All Courses <ArrowRight className="h-3 w-3" />
+              <Button variant="outline" size="sm" className="gap-2 shrink-0">
+                <span>View All Courses</span>
+                <ArrowRight className="h-3 w-3" />
               </Button>
             </Link>
           </div>
 
           <div className="grid md:grid-cols-3 gap-6">
-            {courses.slice(0, 3).map((course, index) => (
-              <Card key={course.id} className="card-hover h-full flex flex-col">
-                <CardContent className="p-5 flex flex-col flex-1">
+            {courses.slice(0, 3).map((course) => (
+              <Card key={course.id} className="card-hover h-full flex flex-col rounded-xl shadow-sm overflow-hidden">
+                <CardContent className="p-6 flex flex-col flex-1">
                   <div className="flex items-center gap-2 mb-2">
                     <Badge variant="secondary">{course.category}</Badge>
                     <Badge variant="outline">{course.mode}</Badge>
@@ -347,31 +362,32 @@ const Index = () => {
       </section>
 
       {/* Test Series Highlight */}
-      <section className="py-16 bg-secondary/40">
-        <div className="container mx-auto px-4">
-          <div className="flex items-center justify-between gap-4 mb-6">
-            <div>
-              <h2 className="text-3xl font-bold">Test Series Highlights</h2>
+      <section className="py-12 md:py-16 bg-secondary/40">
+        <div className="space-y-8">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div className="space-y-1">
+              <h2 className="text-2xl font-semibold">Test Series Highlights</h2>
               <p className="text-muted-foreground">
                 Practice with exam-pattern tests for CBSE and CET.
               </p>
             </div>
             <Link to="/test-series">
-              <Button variant="outline" size="sm" className="gap-1">
-                View All <ArrowRight className="h-3 w-3" />
+              <Button variant="outline" size="sm" className="gap-2 shrink-0">
+                <span>View All</span>
+                <ArrowRight className="h-3 w-3" />
               </Button>
             </Link>
           </div>
 
           <div className="grid md:grid-cols-3 gap-6">
-            {testSeries.slice(0, 3).map((ts, index) => (
-              <Card key={ts.id} className="card-hover h-full flex flex-col">
+            {testSeries.slice(0, 3).map((ts) => (
+              <Card key={ts.id} className="card-hover h-full flex flex-col rounded-xl shadow-sm overflow-hidden">
                 <img
                   src={ts.image}
                   alt={ts.title}
-                  className="w-full h-40 object-cover rounded-t-lg"
+                  className="w-full h-40 object-cover"
                 />
-                <CardContent className="p-5 flex flex-col flex-1">
+                <CardContent className="p-6 flex flex-col flex-1">
                   <h3 className="font-semibold text-lg mb-1">{ts.title}</h3>
                   <p className="text-sm text-muted-foreground mb-4 flex-1 line-clamp-3">
                     {ts.overview}
@@ -394,17 +410,19 @@ const Index = () => {
       </section>
 
       {/* Testimonials */}
-      <section className="py-16 bg-background">
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center mb-4">What Our Students Say</h2>
-          <p className="text-muted-foreground text-center mb-10 max-w-2xl mx-auto">
-            Hear from students who have trusted Saraswati Classes for their academic journey.
-          </p>
+      <section className="py-12 md:py-16 bg-background">
+        <div className="space-y-8">
+          <div className="text-center space-y-2">
+            <h2 className="text-2xl font-semibold">What Our Students Say</h2>
+            <p className="text-muted-foreground max-w-2xl mx-auto">
+              Hear from students who have trusted Saraswati Classes for their academic journey.
+            </p>
+          </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {testimonials.map((t, index) => (
-              <Card key={index} className="h-full">
-                <CardContent className="p-5 flex flex-col items-center text-center gap-3">
+              <Card key={index} className="h-full rounded-xl shadow-sm">
+                <CardContent className="p-6 flex flex-col items-center text-center gap-3">
                   <img
                     src={t.avatar}
                     alt={t.name}
@@ -423,14 +441,13 @@ const Index = () => {
       </section>
 
       {/* CTA */}
-      <section className="py-16 bg-secondary/60">
-        <div className="container mx-auto px-4">
-          <div className="rounded-2xl bg-background shadow-lg px-6 py-10 md:px-10 flex flex-col md:flex-row items-center justify-between gap-6">
-            <div>
-              <h2 className="text-2xl md:text-3xl font-bold">
-                Ready to start your journey?
-              </h2>
-              <p className="text-muted-foreground mt-2 max-w-xl">
+      <section className="py-12 md:py-16 bg-secondary/60">
+        <div className="rounded-xl bg-background shadow-sm p-6 md:p-10 flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="space-y-2">
+            <h2 className="text-2xl font-semibold">
+              Ready to start your journey?
+            </h2>
+            <p className="text-muted-foreground max-w-xl">
                 Explore our curated courses and test series to kickstart your preparation
                 with expert guidance.
               </p>
@@ -440,7 +457,6 @@ const Index = () => {
                 View Courses <ArrowRight className="h-4 w-4" />
               </Button>
             </Link>
-          </div>
         </div>
       </section>
 
@@ -449,6 +465,41 @@ const Index = () => {
         onClose={() => setEnrollOpen(false)}
         courseOrSeries={enrollTarget}
       />
+
+      {/* Map section above footer */}
+      <section className="py-12 md:py-16 bg-background">
+        <div className="space-y-6">
+          <div className="space-y-2 text-center">
+            <h2 className="text-2xl font-semibold">Visit Our Centre</h2>
+            <p className="text-muted-foreground max-w-2xl mx-auto">
+              Saraswati Classes is conveniently located for students across the city.
+              Use the map below to get directions to our coaching centre.
+            </p>
+          </div>
+          <div className="space-y-4">
+            <div className="rounded-xl overflow-hidden border bg-muted">
+              <iframe
+                title="Saraswati Classes Location"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3770.939683862665!2d73.856743!3d18.516726!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bc2c06c7b9b9b9b%3A0x0000000000000000!2sCoaching%20Institute!5e0!3m2!1sen!2sin!4v1700000000000"
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                className="w-full h-64 md:h-80 border-0"
+              />
+            </div>
+            <div className="flex justify-center">
+              <a
+                href="https://www.google.com/maps/dir/?api=1&destination=Coaching+Institute"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Button size="lg" className="gap-2">
+                  Get Directions
+                </Button>
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
     </Layout>
   );
 };

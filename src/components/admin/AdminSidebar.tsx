@@ -4,30 +4,22 @@ import {
   BookOpen,
   Users,
   ClipboardList,
-  Images,
-  Inbox,
+  Image as ImageIcon,
   LogOut,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/context/AuthContext";
 import { useNavigate } from "react-router-dom";
 
-export type AdminTab =
-  | "dashboard"
-  | "courses"
-  | "students"
-  | "tests"
-  | "gallery"
-  | "inquiries";
+export type AdminTab = "dashboard" | "courses" | "students" | "tests" | "banners";
 
 const items: { key: AdminTab; label: string; icon: React.ComponentType<any> }[] =
   [
     { key: "dashboard", label: "Dashboard", icon: LayoutDashboard },
-    { key: "courses", label: "Course Management", icon: BookOpen },
     { key: "students", label: "Student Management", icon: Users },
+    { key: "courses", label: "Course Management", icon: BookOpen },
     { key: "tests", label: "Test Series Management", icon: ClipboardList },
-    { key: "gallery", label: "Gallery Management", icon: Images },
-    { key: "inquiries", label: "Inquiry Management", icon: Inbox },
+    { key: "banners", label: "Banner Management", icon: ImageIcon },
   ];
 
 interface AdminSidebarProps {

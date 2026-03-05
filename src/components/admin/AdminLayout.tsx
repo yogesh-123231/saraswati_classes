@@ -16,7 +16,7 @@ const AdminLayout = ({ active, onChangeTab, children }: AdminLayoutProps) => {
   return (
     <div className="min-h-screen bg-muted flex flex-col">
       <header className="sticky top-0 z-40 bg-background/80 backdrop-blur border-b">
-        <div className="container mx-auto px-4 h-14 flex items-center justify-between">
+        <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 h-14 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Button
               variant="ghost"
@@ -58,7 +58,7 @@ const AdminLayout = ({ active, onChangeTab, children }: AdminLayoutProps) => {
         </AnimatePresence>
 
         <main className="flex-1">
-          <div className="container mx-auto px-4 py-6">{children}</div>
+          <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 py-6 md:py-8">{children}</div>
         </main>
       </div>
     </div>

@@ -1,11 +1,11 @@
 import { motion } from "framer-motion";
-import { Lock } from "lucide-react";
+import { ExternalLink } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { useApp } from "@/context/AppContext";
 import { useAuth } from "@/context/AuthContext";
 
 const StudentMyTestSeries = () => {
-  const { testSeries } = useApp();
+  const { testSeries } = useApp();  
   const { currentStudent } = useAuth();
 
   const approvedTs = testSeries.filter((t) =>
@@ -19,8 +19,8 @@ const StudentMyTestSeries = () => {
           My Test Series
         </h1>
         <p className="text-sm text-muted-foreground">
-          View the test series you are enrolled in. Individual tests remain
-          locked placeholders and will be activated by the admin.
+          View the test series you are enrolled in and access their individual
+          Google Form based tests.
         </p>
       </div>
 
@@ -57,24 +57,40 @@ const StudentMyTestSeries = () => {
                   </div>
 
                   <div className="mt-4 grid sm:grid-cols-2 md:grid-cols-3 gap-3">
-                    {Array.from({ length: Math.min(ts.testsCount, 6) }).map(
-                      (_, idx) => (
+                    {(ts as any).tests && (ts as any).tests.length === 0 ? (
+                      <p className="text-xs text-muted-foreground">
+                        No tests configured yet for this series. They will appear
+                        here once added by the admin.
+                      </p>
+                    ) : (
+                      ((ts as any).tests || []).map((test: any) => (
                         <div
-                          key={idx}
+                          key={test.id}
                           className="flex items-start gap-3 rounded-lg border border-dashed bg-muted/60 px-3 py-2"
                         >
-                          <Lock className="h-3 w-3 text-primary mt-0.5" />
                           <div>
                             <p className="text-xs font-medium">
-                              Test {idx + 1} (Locked)
+                              Test {test.testNumber}
                             </p>
-                            <p className="text-[11px] text-muted-foreground">
-                              This test will be visible with full details once
-                              your access is enabled by admin.
-                            </p>
+                            {test.description && (
+                              <p className="text-[11px] text-muted-foreground">
+                                {test.description}
+                              </p>
+                            )}
+                            {test.testLink && (
+                              <a
+                                href={test.testLink}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="mt-1 inline-flex items-center gap-1 text-[11px] font-medium text-primary underline underline-offset-2"
+                              >
+                                Open Test Form
+                                <ExternalLink className="h-3 w-3" />
+                              </a>
+                            )}
                           </div>
                         </div>
-                      )
+                      ))
                     )}
                   </div>
                 </CardContent>

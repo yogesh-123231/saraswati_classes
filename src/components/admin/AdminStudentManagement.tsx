@@ -1,9 +1,10 @@
-import { useState } from "react";
-import { Pencil, Trash2, Plus } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Pencil, Trash2, Plus, Ban, CheckCircle2 } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import {
   Table,
   TableBody,
@@ -18,70 +19,99 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Badge } from "@/components/ui/badge";
+import type { Student } from "@/types/student";
+import { fetchStudents, createStudent, updateStudent, deleteStudent, toggleStudentBlock } from "@/services/studentService";
 import { useApp } from "@/context/AppContext";
 
-interface EditableStudent {
-  id: string;
-  name: string;
-  email: string;
-  courses: string;
-  status: string;
-}
+const standards = [
+  "1st","2nd","3rd","4th","5th","6th",
+  "7th","8th","9th","10th","11th","12th",
+] as const;
 
-const seedFromContext = (
-  students: ReturnType<typeof useApp>["students"]
-): EditableStudent[] =>
-  students.map((s) => ({
-    id: s.id,
-    name: s.name,
-    email: s.email,
-    courses: `${s.approvedCourses.length} courses`,
-    status: "Active",
-  }));
+type StandardOption = (typeof standards)[number];
+
+const boards: Student["board"][] = ["SSC", "CBSE"];
 
 const AdminStudentManagement = () => {
-  const { students } = useApp();
-  const [rows, setRows] = useState<EditableStudent[]>(() =>
-    seedFromContext(students)
-  );
+  const { courses, testSeries } = useApp();
+  const [rows, setRows] = useState<Student[]>([]);
   const [dialogOpen, setDialogOpen] = useState(false);
-  const [editing, setEditing] = useState<EditableStudent | null>(null);
+  const [editing, setEditing] = useState<Student | null>(null);
+
+  const [selectedCourseIds, setSelectedCourseIds] = useState<string[]>([]);
+  const [selectedSeriesIds, setSelectedSeriesIds] = useState<string[]>([]);
+
+  useEffect(() => {
+    setRows(fetchStudents());
+  }, []);
 
   const openAdd = () => {
     setEditing({
       id: "",
-      name: "",
+      fullName: "",
+      address: "",
+      mobile: "",
       email: "",
-      courses: "",
-      status: "Active",
+      standard: "" as StandardOption,
+      board: "SSC",
+      enrolledCourses: [],
+      enrolledTestSeries: [],
+      username: "",
+      password: "",
+      status: "active",
     });
+    setSelectedCourseIds([]);
+    setSelectedSeriesIds([]);
     setDialogOpen(true);
   };
 
-  const openEdit = (row: EditableStudent) => {
-    setEditing(row);
+  const openEdit = (student: Student) => {
+    setEditing(student);
+    setSelectedCourseIds(student.enrolledCourses);
+    setSelectedSeriesIds(student.enrolledTestSeries);
     setDialogOpen(true);
   };
 
   const handleDelete = (id: string) => {
+    deleteStudent(id);
     setRows((prev) => prev.filter((r) => r.id !== id));
+  };
+
+  const handleToggleBlock = (id: string) => {
+    const updated = toggleStudentBlock(id);
+    if (!updated) return;
+    setRows((prev) => prev.map((s) => (s.id === id ? updated : s)));
   };
 
   const handleSave = () => {
     if (!editing) return;
-    if (!editing.name.trim()) return;
-    setRows((prev) => {
-      if (editing.id && prev.some((r) => r.id === editing.id)) {
-        return prev.map((r) => (r.id === editing.id ? editing : r));
+    if (!editing.fullName.trim() || !editing.email.trim()) return;
+
+    const payload: Omit<Student, "id"> = {
+      ...editing,
+      enrolledCourses: selectedCourseIds,
+      enrolledTestSeries: selectedSeriesIds,
+      status: editing.status ?? "active",
+    };
+
+    if (editing.id) {
+      const updated = updateStudent(editing.id, payload);
+      if (updated) {
+        setRows((prev) => prev.map((s) => (s.id === updated.id ? updated : s)));
       }
-      return [
-        ...prev,
-        {
-          ...editing,
-          id: `local-${Date.now()}`,
-        },
-      ];
-    });
+    } else {
+      const created = createStudent(payload);
+      setRows((prev) => [...prev, created]);
+    }
+
     setDialogOpen(false);
     setEditing(null);
   };
@@ -90,12 +120,10 @@ const AdminStudentManagement = () => {
     <div className="space-y-6">
       <div className="flex items-center justify-between gap-2">
         <div>
-          <h1 className="text-xl md:text-2xl font-semibold mb-1">
-            Student Management
-          </h1>
+          <h1 className="text-3xl md:text-4xl font-bold">Student Management</h1>
           <p className="text-sm text-muted-foreground">
-            Manage student records and their high-level enrolment info. All data
-            here is placeholder until wired to the real student database.
+            Manage student records, enrolments and account access. Data is stored locally
+            via mock services and can be wired to real APIs later.
           </p>
         </div>
         <Button size="sm" className="gap-1" onClick={openAdd}>
@@ -111,7 +139,9 @@ const AdminStudentManagement = () => {
               <TableRow>
                 <TableHead>Name</TableHead>
                 <TableHead>Email</TableHead>
-                <TableHead>Enrolled Courses</TableHead>
+                <TableHead>Enrolled Courses / Tests</TableHead>
+                <TableHead>Username</TableHead>
+                <TableHead>Password</TableHead>
                 <TableHead>Status</TableHead>
                 <TableHead className="text-right">Actions</TableHead>
               </TableRow>
@@ -119,10 +149,53 @@ const AdminStudentManagement = () => {
             <TableBody>
               {rows.map((row) => (
                 <TableRow key={row.id}>
-                  <TableCell className="text-xs">{row.name}</TableCell>
+                  <TableCell className="text-xs">{row.fullName}</TableCell>
                   <TableCell className="text-xs">{row.email}</TableCell>
-                  <TableCell className="text-xs">{row.courses}</TableCell>
-                  <TableCell className="text-xs">{row.status}</TableCell>
+                  <TableCell className="text-xs">
+                    <div className="flex flex-col gap-1">
+                      {row.enrolledCourses.length > 0 && (
+                        <span>
+                          Courses:{" "}
+                          {row.enrolledCourses
+                            .map((id) => courses.find((c) => c.id === id)?.title)
+                            .filter(Boolean)
+                            .join(", ")}
+                        </span>
+                      )}
+                      {row.enrolledTestSeries.length > 0 && (
+                        <span>
+                          Tests:{" "}
+                          {row.enrolledTestSeries
+                            .map((id) =>
+                              testSeries.find((t) => t.id === id)?.title
+                            )
+                            .filter(Boolean)
+                            .join(", ")}
+                        </span>
+                      )}
+                      {row.enrolledCourses.length === 0 &&
+                        row.enrolledTestSeries.length === 0 && (
+                          <span className="text-muted-foreground">
+                            Not enrolled yet
+                          </span>
+                        )}
+                    </div>
+                  </TableCell>
+                  <TableCell className="text-xs">{row.username}</TableCell>
+                  <TableCell className="text-xs">{row.password}</TableCell>
+                  <TableCell className="text-xs">
+                    <Badge
+                      variant={row.status === "blocked" ? "destructive" : "outline"}
+                      className="gap-1"
+                    >
+                      {row.status === "blocked" ? (
+                        <Ban className="h-3 w-3" />
+                      ) : (
+                        <CheckCircle2 className="h-3 w-3" />
+                      )}
+                      {row.status === "blocked" ? "Blocked" : "Active"}
+                    </Badge>
+                  </TableCell>
                   <TableCell className="text-right space-x-2">
                     <Button
                       size="icon"
@@ -139,6 +212,18 @@ const AdminStudentManagement = () => {
                       onClick={() => handleDelete(row.id)}
                     >
                       <Trash2 className="h-3 w-3" />
+                    </Button>
+                    <Button
+                      size="icon"
+                      variant="outline"
+                      className="h-7 w-7"
+                      onClick={() => handleToggleBlock(row.id)}
+                    >
+                      {row.status === "blocked" ? (
+                        <CheckCircle2 className="h-3 w-3" />
+                      ) : (
+                        <Ban className="h-3 w-3" />
+                      )}
                     </Button>
                   </TableCell>
                 </TableRow>
@@ -170,13 +255,13 @@ const AdminStudentManagement = () => {
           {editing && (
             <div className="space-y-3 mt-2">
               <div className="space-y-1">
-                <Label htmlFor="student-name-input">Name</Label>
+                <Label htmlFor="student-name-input">Full Name</Label>
                 <Input
                   id="student-name-input"
-                  value={editing.name}
+                  value={editing.fullName}
                   onChange={(e) =>
                     setEditing((prev) =>
-                      prev ? { ...prev, name: e.target.value } : prev
+                      prev ? { ...prev, fullName: e.target.value } : prev
                     )
                   }
                 />
@@ -194,30 +279,173 @@ const AdminStudentManagement = () => {
                 />
               </div>
               <div className="space-y-1">
-                <Label htmlFor="student-courses-input">Enrolled Courses</Label>
-                <Input
-                  id="student-courses-input"
-                  value={editing.courses}
+                <Label htmlFor="student-address-input">Full Address</Label>
+                <Textarea
+                  id="student-address-input"
+                  rows={3}
+                  value={editing.address}
                   onChange={(e) =>
                     setEditing((prev) =>
-                      prev ? { ...prev, courses: e.target.value } : prev
+                      prev ? { ...prev, address: e.target.value } : prev
                     )
                   }
-                  placeholder="e.g. 10th CBSE, CET Crash"
                 />
               </div>
+              <div className="grid sm:grid-cols-2 gap-3">
+                <div className="space-y-1">
+                  <Label htmlFor="student-mobile-input">Mobile Number</Label>
+                  <Input
+                    id="student-mobile-input"
+                    value={editing.mobile}
+                    onChange={(e) =>
+                      setEditing((prev) =>
+                        prev ? { ...prev, mobile: e.target.value } : prev
+                      )
+                    }
+                  />
+                </div>
+                <div className="space-y-1">
+                  <Label>Standard</Label>
+                  <Select
+                    value={editing.standard}
+                    onValueChange={(value) =>
+                      setEditing((prev) =>
+                        prev ? { ...prev, standard: value as StandardOption } : prev
+                      )
+                    }
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select standard" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {standards.map((std) => (
+                        <SelectItem key={std} value={std}>
+                          {std}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+
+              <div className="grid sm:grid-cols-2 gap-3">
+                <div className="space-y-1">
+                  <Label>Board</Label>
+                  <Select
+                    value={editing.board}
+                    onValueChange={(value) =>
+                      setEditing((prev) =>
+                        prev ? { ...prev, board: value as Student["board"] } : prev
+                      )
+                    }
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select board" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {boards.map((b) => (
+                        <SelectItem key={b} value={b}>
+                          {b}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="space-y-1">
+                  <Label htmlFor="student-username-input">Username</Label>
+                  <Input
+                    id="student-username-input"
+                    value={editing.username}
+                    onChange={(e) =>
+                      setEditing((prev) =>
+                        prev ? { ...prev, username: e.target.value } : prev
+                      )
+                    }
+                  />
+                </div>
+              </div>
+
               <div className="space-y-1">
-                <Label htmlFor="student-status-input">Status</Label>
+                <Label htmlFor="student-password-input">Password</Label>
                 <Input
-                  id="student-status-input"
-                  value={editing.status}
+                  id="student-password-input"
+                  type="text"
+                  value={editing.password}
                   onChange={(e) =>
                     setEditing((prev) =>
-                      prev ? { ...prev, status: e.target.value } : prev
+                      prev ? { ...prev, password: e.target.value } : prev
                     )
                   }
-                  placeholder="Active / Inactive"
                 />
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-3">
+                <div className="space-y-1">
+                  <Label>Enroll in Courses</Label>
+                  <div className="border rounded-md p-2 max-h-40 overflow-auto space-y-1 text-xs">
+                    {courses.map((course) => {
+                      const checked = selectedCourseIds.includes(course.id);
+                      return (
+                        <label
+                          key={course.id}
+                          className="flex items-center gap-2 cursor-pointer"
+                        >
+                          <input
+                            type="checkbox"
+                            className="h-3 w-3"
+                            checked={checked}
+                            onChange={(e) => {
+                              setSelectedCourseIds((prev) =>
+                                e.target.checked
+                                  ? [...prev, course.id]
+                                  : prev.filter((id) => id !== course.id)
+                              );
+                            }}
+                          />
+                          <span>{course.title}</span>
+                        </label>
+                      );
+                    })}
+                    {courses.length === 0 && (
+                      <p className="text-muted-foreground">
+                        No courses configured yet.
+                      </p>
+                    )}
+                  </div>
+                </div>
+                <div className="space-y-1">
+                  <Label>Enroll in Test Series</Label>
+                  <div className="border rounded-md p-2 max-h-40 overflow-auto space-y-1 text-xs">
+                    {testSeries.map((ts) => {
+                      const checked = selectedSeriesIds.includes(ts.id);
+                      return (
+                        <label
+                          key={ts.id}
+                          className="flex items-center gap-2 cursor-pointer"
+                        >
+                          <input
+                            type="checkbox"
+                            className="h-3 w-3"
+                            checked={checked}
+                            onChange={(e) => {
+                              setSelectedSeriesIds((prev) =>
+                                e.target.checked
+                                  ? [...prev, ts.id]
+                                  : prev.filter((id) => id !== ts.id)
+                              );
+                            }}
+                          />
+                          <span>{ts.title}</span>
+                        </label>
+                      );
+                    })}
+                    {testSeries.length === 0 && (
+                      <p className="text-muted-foreground">
+                        No test series configured yet.
+                      </p>
+                    )}
+                  </div>
+                </div>
               </div>
 
               <div className="flex justify-end gap-2 pt-2">

@@ -1,4 +1,3 @@
-import { motion } from "framer-motion";
 import { BookOpen, ClipboardList, Clock, Trophy } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { useApp } from "@/context/AppContext";
@@ -16,20 +15,20 @@ const StudentDashboardOverview = () => {
   );
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-xl md:text-2xl font-semibold mb-1">
+    <div className="space-y-8">
+      <div className="space-y-2">
+        <h1 className="text-3xl md:text-4xl font-bold">
           Dashboard
         </h1>
-        <p className="text-sm text-muted-foreground">
+        <p className="text-muted-foreground">
           Quick snapshot of your courses, tests and upcoming work.
         </p>
       </div>
 
       <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <Card>
-          <CardContent className="p-4 flex items-center gap-3">
-            <div className="h-9 w-9 rounded-full bg-primary/10 flex items-center justify-center">
+        <Card className="rounded-xl shadow-sm">
+          <CardContent className="p-6 flex items-center gap-2">
+            <div className="h-9 w-9 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
               <BookOpen className="h-4 w-4 text-primary" />
             </div>
             <div>
@@ -40,9 +39,9 @@ const StudentDashboardOverview = () => {
             </div>
           </CardContent>
         </Card>
-        <Card>
-          <CardContent className="p-4 flex items-center gap-3">
-            <div className="h-9 w-9 rounded-full bg-primary/10 flex items-center justify-center">
+        <Card className="rounded-xl shadow-sm">
+          <CardContent className="p-6 flex items-center gap-2">
+            <div className="h-9 w-9 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
               <ClipboardList className="h-4 w-4 text-primary" />
             </div>
             <div>
@@ -53,9 +52,9 @@ const StudentDashboardOverview = () => {
             </div>
           </CardContent>
         </Card>
-        <Card>
-          <CardContent className="p-4 flex items-center gap-3">
-            <div className="h-9 w-9 rounded-full bg-primary/10 flex items-center justify-center">
+        <Card className="rounded-xl shadow-sm">
+          <CardContent className="p-6 flex items-center gap-2">
+            <div className="h-9 w-9 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
               <Clock className="h-4 w-4 text-primary" />
             </div>
             <div>
@@ -66,9 +65,9 @@ const StudentDashboardOverview = () => {
             </div>
           </CardContent>
         </Card>
-        <Card>
-          <CardContent className="p-4 flex items-center gap-3">
-            <div className="h-9 w-9 rounded-full bg-primary/10 flex items-center justify-center">
+        <Card className="rounded-xl shadow-sm">
+          <CardContent className="p-6 flex items-center gap-2">
+            <div className="h-9 w-9 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
               <Trophy className="h-4 w-4 text-primary" />
             </div>
             <div>
@@ -81,13 +80,9 @@ const StudentDashboardOverview = () => {
         </Card>
       </div>
 
-      <motion.div
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="grid lg:grid-cols-2 gap-6"
-      >
-        <Card>
-          <CardContent className="p-5">
+      <div className="grid lg:grid-cols-2 gap-6">
+        <Card className="rounded-xl shadow-sm">
+          <CardContent className="p-6">
             <p className="font-semibold mb-2 text-sm">Recent Courses</p>
             <p className="text-xs text-muted-foreground mb-4">
               Quick access to courses you’ve been assigned.
@@ -115,8 +110,8 @@ const StudentDashboardOverview = () => {
           </CardContent>
         </Card>
 
-        <Card>
-          <CardContent className="p-5">
+        <Card className="rounded-xl shadow-sm">
+          <CardContent className="p-6">
             <p className="font-semibold mb-2 text-sm">Recent Test Series</p>
             <p className="text-xs text-muted-foreground mb-4">
               Once you are enrolled to test series, they will be listed here.
@@ -143,7 +138,7 @@ const StudentDashboardOverview = () => {
             </div>
           </CardContent>
         </Card>
-      </motion.div>
+      </div>
     </div>
   );
 };

@@ -17,6 +17,7 @@ import AboutPage from "./pages/AboutPage";
 import ContactPage from "./pages/ContactPage";
 import GalleryPage from "./pages/GalleryPage";
 import ProtectedRoute from "./components/ProtectedRoute";
+import ScrollToTop from "./components/ScrollToTop";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -29,6 +30,7 @@ const App = () => (
           <Toaster />
           <Sonner />
           <BrowserRouter>
+            <ScrollToTop />
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/courses" element={<CoursesPage />} />
@@ -37,10 +39,18 @@ const App = () => (
               <Route path="/test-series/:id" element={<TestSeriesDetailPage />} />
               <Route path="/login" element={<LoginPage />} />
               <Route
-                path="/admin"
+                path="/admin/*"
                 element={
                   <ProtectedRoute requiredRole="admin">
                     <AdminDashboard />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/student/*"
+                element={
+                  <ProtectedRoute requiredRole="student">
+                    <StudentDashboard />
                   </ProtectedRoute>
                 }
               />

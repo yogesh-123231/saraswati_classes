@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import { motion } from "framer-motion";
 import {
   ArrowLeft,
   CheckCircle2,
@@ -32,7 +31,7 @@ const TestSeriesDetailPage = () => {
   if (!ts)
     return (
       <Layout>
-        <div className="container mx-auto px-4 py-20 text-center">
+        <div className="py-20 text-center space-y-4">
           <h1 className="text-2xl font-bold">Test Series not found</h1>
           <Link to="/test-series">
             <Button className="mt-4">Back to Test Series</Button>
@@ -43,31 +42,27 @@ const TestSeriesDetailPage = () => {
 
   return (
     <Layout>
-      <div className="container mx-auto px-4 py-10">
+      <div className="py-12 md:py-16 space-y-8">
         <Link
           to="/test-series"
-          className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-primary mb-6"
+          className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-primary"
         >
-          <ArrowLeft className="h-4 w-4" /> Back to Test Series
+          <ArrowLeft className="h-4 w-4 shrink-0" /> Back to Test Series
         </Link>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="grid lg:grid-cols-3 gap-8"
-        >
+        <div className="grid lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2 space-y-8">
-            <div>
-              <h1 className="text-3xl font-bold mb-3">{ts.title}</h1>
-              <p className="text-muted-foreground mb-3">{ts.overview}</p>
+            <div className="space-y-2">
+              <h1 className="text-3xl md:text-4xl font-bold">{ts.title}</h1>
+              <p className="text-muted-foreground">{ts.overview}</p>
               <p className="text-xs text-muted-foreground">
                 {ts.testsCount} tests • {ts.mode}
               </p>
             </div>
 
-            <div>
-              <h2 className="text-xl font-semibold mb-3 flex items-center gap-2">
-                <ListChecks className="h-5 w-5 text-primary" /> Syllabus &
+            <div className="space-y-3">
+              <h2 className="text-2xl font-semibold flex items-center gap-2">
+                <ListChecks className="h-5 w-5 text-primary shrink-0" /> Syllabus &
                 Coverage
               </h2>
               <ul className="space-y-2">
@@ -154,8 +149,8 @@ const TestSeriesDetailPage = () => {
             </div>
           </div>
 
-          <div>
-            <Card className="sticky top-20 overflow-hidden">
+            <div>
+            <Card className="sticky top-20 overflow-hidden rounded-xl shadow-sm">
               <img
                 src={ts.image}
                 alt={ts.title}
@@ -166,8 +161,8 @@ const TestSeriesDetailPage = () => {
                 <p className="text-sm text-muted-foreground">
                   {ts.testsCount} tests • {ts.mode}
                 </p>
-                <p className="inline-flex items-center gap-1 text-sm font-semibold text-primary">
-                  <IndianRupee className="h-4 w-4" />
+                <p className="inline-flex items-center gap-2 text-sm font-semibold text-primary">
+                  <IndianRupee className="h-4 w-4 shrink-0" />
                   {ts.price}
                 </p>
 
@@ -182,7 +177,7 @@ const TestSeriesDetailPage = () => {
               </CardContent>
             </Card>
           </div>
-        </motion.div>
+        </div>
       </div>
 
       <EnrollmentModal
