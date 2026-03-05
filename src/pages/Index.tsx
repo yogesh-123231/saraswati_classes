@@ -1,5 +1,5 @@
 import { Badge } from "@/components/ui/badge"
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import heroImage from "@/assets/hero.png";
@@ -19,6 +19,8 @@ import { useApp } from "@/context/AppContext";
 import { testimonials } from "@/data/mockData";
 import HomeBannerCarousel from "@/components/banner/HomeBannerCarousel";
 
+import useEmblaCarousel from "embla-carousel-react";
+
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
   visible: (i: number) => ({ opacity: 1, y: 0, transition: { delay: i * 0.1, duration: 0.5 } }),
@@ -33,6 +35,37 @@ const Index = () => {
     setEnrollTarget(target);
     setEnrollOpen(true);
   };
+
+  // Embla carousel setup for testimonials
+  const [emblaRef, emblaApi] = useEmblaCarousel({
+    loop: true,
+    align: "start",
+    skipSnaps: false,
+  });
+
+  const autoplayRef = useRef<NodeJS.Timeout | null>(null);
+
+  const startAutoplay = useCallback(() => {
+    if (autoplayRef.current || !emblaApi) return;
+    autoplayRef.current = setInterval(() => {
+      emblaApi.scrollNext();
+    }, 3000);
+  }, [emblaApi]);
+
+  const stopAutoplay = useCallback(() => {
+    if (autoplayRef.current) {
+      clearInterval(autoplayRef.current);
+      autoplayRef.current = null;
+    }
+  }, []);
+
+  useEffect(() => {
+    if (emblaApi) {
+      startAutoplay();
+    }
+    return () => stopAutoplay();
+  }, [emblaApi, startAutoplay, stopAutoplay]);
+
 
   return (
     <Layout>
@@ -437,32 +470,49 @@ const Index = () => {
       </section>
 
       {/* Testimonials */}
-      <section className="py-12 md:py-16 bg-background">
-        <div className="space-y-8">
-          <div className="text-center space-y-2">
-            <h2 className="text-2xl font-semibold">What Our Students Say</h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto">
-              Hear from students who have trusted Saraswati Classes for their academic journey.
-            </p>
-          </div>
+      <section className="py-16 md:py-20 bg-background">
+        <div className="text-center space-y-4">
+          <h2 className="text-3xl md:text-4xl font-semibold text-[#0F172A]">
+            Don't take our word for it. Hear it from our students.
+          </h2>
+          <p className="text-[#64748B] max-w-2xl mx-auto mt-3">
+            Hear from students who have trusted Saraswati Classes for their academic journey.
+          </p>
+        </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {testimonials.map((t, index) => (
-              <Card key={index} className="h-full rounded-xl shadow-sm">
-                <CardContent className="p-6 flex flex-col items-center text-center gap-3">
-                  <img
-                    src={t.avatar}
-                    alt={t.name}
-                    className="h-14 w-14 rounded-full object-cover border border-sky-100"
-                  />
-                  <p className="text-sm text-muted-foreground">“{t.text}”</p>
-                  <div className="mt-1">
-                    <p className="font-semibold text-sm">{t.name}</p>
-                    <p className="text-xs text-muted-foreground">{t.course}</p>
+        <div
+          className="embla mt-8"
+          onMouseEnter={stopAutoplay}
+          onMouseLeave={startAutoplay}
+        >
+          <div className="embla__viewport" ref={emblaRef}>
+            <div className="embla__container flex">
+              {testimonials.map((t, index) => (
+                <div
+                  key={index}
+                  className="embla__slide flex-[0_0_100%] sm:flex-[0_0_50%] lg:flex-[0_0_25%] px-2"
+                >
+                  <div className="bg-white border border-slate-200 rounded-xl p-6 shadow-sm h-full flex flex-col">
+                    <div className="mb-4">
+                      <div className="w-10 h-10 rounded-full bg-sky-500 overflow-hidden">
+                        <img
+                          src={t.avatar}
+                          alt={t.name}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                    </div>
+                    <p className="text-base leading-relaxed text-[#475569] mb-6">
+                      “{t.text}”
+                    </p>
+                    <div className="mt-auto">
+                      <p className="font-semibold text-[#0F172A]">{t.name}</p>
+                      <p className="text-sm text-[#64748B] mt-1">{t.course}</p>
+                    </div>
                   </div>
-                </CardContent>
-              </Card>
-            ))}
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
