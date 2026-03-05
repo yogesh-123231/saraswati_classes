@@ -133,94 +133,210 @@ const Index = () => {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <Card className="card-hover rounded-xl shadow-sm">
-              <CardContent className="p-6">
-                <div className="flex items-center gap-2 mb-3">
-                  <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-sky-100 text-sky-600 shrink-0">
-                    <BookOpen className="h-5 w-5" />
-                  </span>
-                  <h3 className="font-semibold text-lg">Foundation Courses</h3>
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
+            {/* Card 1: Foundation Courses */}
+            <div
+              className="relative flex flex-col h-full rounded-[20px] p-7 transition-all duration-300 hover:shadow-lg hover:-translate-y-1.5"
+              style={{
+                background: "linear-gradient(135deg, rgba(219, 234, 254, 0.8) 0%, rgba(191, 219, 254, 0.6) 100%)",
+                boxShadow: "0 10px 30px rgba(0, 0, 0, 0.05)",
+              }}
+            >
+              <div className="flex flex-col flex-1">
+                {/* Step Number */}
+                <div className="text-sm font-semibold text-slate-400 mb-4">01</div>
+
+                {/* Icon Container */}
+                <div className="mb-5">
+                  <div className="inline-flex h-12 w-12 items-center justify-center rounded-[12px] bg-blue-100 text-blue-600">
+                    <BookOpen className="h-6 w-6" />
+                  </div>
                 </div>
-                <p className="text-sm text-muted-foreground mb-4">
-                  8th–10th CBSE & SSC batches focused on strong Maths and
-                  Science fundamentals.
-                </p>
-                <Link to="/courses">
-                  <Button size="sm" variant="outline" className="gap-1">
+
+                {/* Title */}
+                <h3 className="text-lg font-semibold text-slate-900 mb-4">Foundation Courses</h3>
+
+                {/* Description as Bullet List */}
+                <ul className="text-sm text-slate-600 space-y-2 mb-6 flex-1">
+                  <li className="flex items-start gap-2">
+                    <span className="text-slate-400 mt-0.5">•</span>
+                    <span>8th–10th CBSE & SSC programs</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-slate-400 mt-0.5">•</span>
+                    <span>Strong Maths & Science focus</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-slate-400 mt-0.5">•</span>
+                    <span>Structured fundamentals</span>
+                  </li>
+                </ul>
+
+                {/* CTA Button */}
+                <Link to="/courses" className="w-full">
+                  <Button
+                    size="sm"
+                    className="w-full bg-blue-900 hover:bg-blue-800 text-white rounded-full font-medium"
+                  >
                     View Foundation
-                    <ArrowRight className="h-3 w-3" />
+                    <ArrowRight className="h-3 w-3 ml-2" />
                   </Button>
                 </Link>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
 
-            <Card className="card-hover rounded-xl shadow-sm">
-              <CardContent className="p-6">
-                <div className="flex items-center gap-2 mb-3">
-                  <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-sky-100 text-sky-600 shrink-0">
-                    <Monitor className="h-5 w-5" />
-                  </span>
-                  <h3 className="font-semibold text-lg">
-                    JEE Preparation (via 11th–12th)
-                  </h3>
+            {/* Card 2: JEE Preparation */}
+            <div
+              className="relative flex flex-col h-full rounded-[20px] p-7 transition-all duration-300 hover:shadow-lg hover:-translate-y-1.5"
+              style={{
+                background: "linear-gradient(135deg, rgba(254, 243, 224, 0.8) 0%, rgba(253, 230, 197, 0.6) 100%)",
+                boxShadow: "0 10px 30px rgba(0, 0, 0, 0.05)",
+              }}
+            >
+              <div className="flex flex-col flex-1">
+                {/* Step Number */}
+                <div className="text-sm font-semibold text-slate-400 mb-4">02</div>
+
+                {/* Icon Container */}
+                <div className="mb-5">
+                  <div className="inline-flex h-12 w-12 items-center justify-center rounded-[12px] bg-amber-100 text-amber-700">
+                    <Monitor className="h-6 w-6" />
+                  </div>
                 </div>
-                <p className="text-sm text-muted-foreground mb-4">
-                  Strong PCM base through 11th–12th PCMB with focus on JEE exam
-                  patterns.
-                </p>
-                <Link to="/courses">
-                  <Button size="sm" variant="outline" className="gap-1">
+
+                {/* Title */}
+                <h3 className="text-lg font-semibold text-slate-900 mb-4">JEE Preparation (via 11th–12th)</h3>
+
+                {/* Description as Bullet List */}
+                <ul className="text-sm text-slate-600 space-y-2 mb-6 flex-1">
+                  <li className="flex items-start gap-2">
+                    <span className="text-slate-400 mt-0.5">•</span>
+                    <span>11th–12th PCMB programs</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-slate-400 mt-0.5">•</span>
+                    <span>JEE exam pattern focus</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-slate-400 mt-0.5">•</span>
+                    <span>Strong PCM foundation</span>
+                  </li>
+                </ul>
+
+                {/* CTA Button */}
+                <Link to="/courses" className="w-full">
+                  <Button
+                    size="sm"
+                    className="w-full bg-blue-900 hover:bg-blue-800 text-white rounded-full font-medium"
+                  >
                     JEE-Oriented Batches
-                    <ArrowRight className="h-3 w-3" />
+                    <ArrowRight className="h-3 w-3 ml-2" />
                   </Button>
                 </Link>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
 
-            <Card className="card-hover rounded-xl shadow-sm">
-              <CardContent className="p-6">
-                <div className="flex items-center gap-2 mb-3">
-                  <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-emerald-100 text-emerald-600 shrink-0">
-                    <Stethoscope className="h-5 w-5" />
-                  </span>
-                  <h3 className="font-semibold text-lg">
-                    NEET Preparation (via 11th–12th)
-                  </h3>
+            {/* Card 3: NEET Preparation */}
+            <div
+              className="relative flex flex-col h-full rounded-[20px] p-7 transition-all duration-300 hover:shadow-lg hover:-translate-y-1.5"
+              style={{
+                background: "linear-gradient(135deg, rgba(243, 232, 255, 0.8) 0%, rgba(230, 204, 255, 0.6) 100%)",
+                boxShadow: "0 10px 30px rgba(0, 0, 0, 0.05)",
+              }}
+            >
+              <div className="flex flex-col flex-1">
+                {/* Step Number */}
+                <div className="text-sm font-semibold text-slate-400 mb-4">03</div>
+
+                {/* Icon Container */}
+                <div className="mb-5">
+                  <div className="inline-flex h-12 w-12 items-center justify-center rounded-[12px] bg-purple-100 text-purple-600">
+                    <Stethoscope className="h-6 w-6" />
+                  </div>
                 </div>
-                <p className="text-sm text-muted-foreground mb-4">
-                  Detailed Biology, Physics & Chemistry coverage for future NEET
-                  aspirants.
-                </p>
-                <Link to="/courses">
-                  <Button size="sm" variant="outline" className="gap-1">
+
+                {/* Title */}
+                <h3 className="text-lg font-semibold text-slate-900 mb-4">NEET Preparation (via 11th–12th)</h3>
+
+                {/* Description as Bullet List */}
+                <ul className="text-sm text-slate-600 space-y-2 mb-6 flex-1">
+                  <li className="flex items-start gap-2">
+                    <span className="text-slate-400 mt-0.5">•</span>
+                    <span>Detailed Biology, Physics & Chemistry</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-slate-400 mt-0.5">•</span>
+                    <span>NEET-oriented curriculum</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-slate-400 mt-0.5">•</span>
+                    <span>Future NEET aspirants</span>
+                  </li>
+                </ul>
+
+                {/* CTA Button */}
+                <Link to="/courses" className="w-full">
+                  <Button
+                    size="sm"
+                    className="w-full bg-blue-900 hover:bg-blue-800 text-white rounded-full font-medium"
+                  >
                     NEET-Oriented Batches
-                    <ArrowRight className="h-3 w-3" />
+                    <ArrowRight className="h-3 w-3 ml-2" />
                   </Button>
                 </Link>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
 
-            <Card className="card-hover rounded-xl shadow-sm">
-              <CardContent className="p-6">
-                <div className="flex items-center gap-2 mb-3">
-                  <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-indigo-100 text-indigo-600 shrink-0">
-                    <Calculator className="h-5 w-5" />
-                  </span>
-                  <h3 className="font-semibold text-lg">CET Crash Course</h3>
+            {/* Card 4: CET Crash Course */}
+            <div
+              className="relative flex flex-col h-full rounded-[20px] p-7 transition-all duration-300 hover:shadow-lg hover:-translate-y-1.5"
+              style={{
+                background: "linear-gradient(135deg, rgba(254, 237, 224, 0.8) 0%, rgba(254, 214, 165, 0.6) 100%)",
+                boxShadow: "0 10px 30px rgba(0, 0, 0, 0.05)",
+              }}
+            >
+              <div className="flex flex-col flex-1">
+                {/* Step Number */}
+                <div className="text-sm font-semibold text-slate-400 mb-4">04</div>
+
+                {/* Icon Container */}
+                <div className="mb-5">
+                  <div className="inline-flex h-12 w-12 items-center justify-center rounded-[12px] bg-orange-100 text-orange-600">
+                    <Calculator className="h-6 w-6" />
+                  </div>
                 </div>
-                <p className="text-sm text-muted-foreground mb-4">
-                  High-intensity 45–50 days CET crash batch with multiple mock
-                  tests.
-                </p>
-                <Link to="/courses">
-                  <Button size="sm" variant="outline" className="gap-1">
+
+                {/* Title */}
+                <h3 className="text-lg font-semibold text-slate-900 mb-4">CET Crash Course</h3>
+
+                {/* Description as Bullet List */}
+                <ul className="text-sm text-slate-600 space-y-2 mb-6 flex-1">
+                  <li className="flex items-start gap-2">
+                    <span className="text-slate-400 mt-0.5">•</span>
+                    <span>45–50 day intensive batch</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-slate-400 mt-0.5">•</span>
+                    <span>Multiple mock tests</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-slate-400 mt-0.5">•</span>
+                    <span>CET exam focused</span>
+                  </li>
+                </ul>
+
+                {/* CTA Button */}
+                <Link to="/courses" className="w-full">
+                  <Button
+                    size="sm"
+                    className="w-full bg-blue-900 hover:bg-blue-800 text-white rounded-full font-medium"
+                  >
                     View CET Crash
-                    <ArrowRight className="h-3 w-3" />
+                    <ArrowRight className="h-3 w-3 ml-2" />
                   </Button>
                 </Link>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
           </div>
         </div>
       </section>
