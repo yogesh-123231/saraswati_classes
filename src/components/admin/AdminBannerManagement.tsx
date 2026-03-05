@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Plus, Trash2, Pencil } from "lucide-react";
+import { Plus, Trash2, Pencil, Upload } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -34,10 +34,58 @@ const AdminBannerManagement = () => {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [image, setImage] = useState("");
   const [linkedTestSeriesId, setLinkedTestSeriesId] = useState("");
+  const [isDragging, setIsDragging] = useState(false);
+  const [imagePreview, setImagePreview] = useState("");
 
   useEffect(() => {
     setBanners(fetchBanners());
   }, []);
+
+  useEffect(() => {
+    // Update preview when image URL changes
+    if (image && image.startsWith("http")) {
+      setImagePreview(image);
+    }
+  }, [image]);
+
+  const handleFileSelect = (file: File) => {
+    if (!file.type.startsWith("image/")) {
+      alert("Please select an image file");
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const result = e.target?.result as string;
+      setImage(result);
+      setImagePreview(result);
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = () => {
+    setIsDragging(false);
+  };
+
+  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    setIsDragging(false);
+    const files = e.dataTransfer.files;
+    if (files.length > 0) {
+      handleFileSelect(files[0]);
+    }
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.currentTarget.files;
+    if (files && files.length > 0) {
+      handleFileSelect(files[0]);
+    }
+  };
 
   const handleSave = () => {
     if (!image || !linkedTestSeriesId) return;
@@ -55,6 +103,7 @@ const AdminBannerManagement = () => {
     setEditingId(null);
     setImage("");
     setLinkedTestSeriesId("");
+    setImagePreview("");
     setDialogOpen(false);
   };
 
@@ -75,6 +124,7 @@ const AdminBannerManagement = () => {
             setEditingId(null);
             setImage("");
             setLinkedTestSeriesId("");
+            setImagePreview("");
             setDialogOpen(true);
           }}
         >
@@ -118,6 +168,7 @@ const AdminBannerManagement = () => {
                         onClick={() => {
                           setEditingId(banner.id);
                           setImage(banner.image);
+                          setImagePreview(banner.image);
                           setLinkedTestSeriesId(banner.linkedTestSeriesId);
                           setDialogOpen(true);
                         }}
@@ -158,13 +209,14 @@ const AdminBannerManagement = () => {
       </Card>
 
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-        <DialogContent>
+        <DialogContent className="max-h-[85vh] overflow-hidden flex flex-col">
           <DialogHeader>
             <DialogTitle className="text-sm">
               {editingId ? "Edit Banner" : "Add Banner"}
             </DialogTitle>
           </DialogHeader>
-          <div className="space-y-4 mt-2">
+          <div className="flex flex-col flex-1 overflow-hidden">
+          <div className="space-y-4 mt-2 overflow-y-auto pr-3">
             <div className="space-y-1">
               <Label htmlFor="banner-image">Banner Image URL</Label>
               <Input
@@ -174,6 +226,56 @@ const AdminBannerManagement = () => {
                 placeholder="https://..."
               />
             </div>
+
+            <div className="space-y-2">
+              <Label>Or Upload Image</Label>
+              <div
+                onDragOver={handleDragOver}
+                onDragLeave={handleDragLeave}
+                onDrop={handleDrop}
+                className={`border-2 border-dashed rounded-lg p-6 text-center cursor-pointer transition-colors ${
+                  isDragging
+                    ? "border-primary bg-primary/5"
+                    : "border-input hover:border-primary/50"
+                }`}
+              >
+                <input
+                  type="file"
+                  id="file-input"
+                  className="hidden"
+                  accept="image/*"
+                  onChange={handleInputChange}
+                />
+                <label
+                  htmlFor="file-input"
+                  className="flex flex-col items-center gap-2 cursor-pointer"
+                >
+                  <Upload className="h-6 w-6 text-muted-foreground" />
+                  <div className="text-xs">
+                    <p className="font-medium">
+                      Drag and drop your image here
+                    </p>
+                    <p className="text-muted-foreground">
+                      or click to select from device
+                    </p>
+                  </div>
+                </label>
+              </div>
+            </div>
+
+            {imagePreview && (
+              <div className="space-y-2">
+                <Label>Image Preview</Label>
+                <div className="border rounded-lg overflow-hidden bg-muted/30 p-2">
+                  <img
+                    src={imagePreview}
+                    alt="Banner preview"
+                    className="w-full h-40 object-cover rounded"
+                  />
+                </div>
+              </div>
+            )}
+
             <div className="space-y-1">
               <Label htmlFor="banner-series">Link to Test Series</Label>
               <select
@@ -202,6 +304,7 @@ const AdminBannerManagement = () => {
                 {editingId ? "Save" : "Create"}
               </Button>
             </div>
+          </div>
           </div>
         </DialogContent>
       </Dialog>

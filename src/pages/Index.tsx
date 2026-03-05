@@ -1,5 +1,5 @@
 import { Badge } from "@/components/ui/badge"
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import {
@@ -24,184 +24,83 @@ const fadeUp = {
 };
 
 const Index = () => {
-  const { testSeries, heroPosters, courses } = useApp();
+  const { testSeries, courses } = useApp();
   const [enrollOpen, setEnrollOpen] = useState(false);
   const [enrollTarget, setEnrollTarget] = useState("");
-  const [currentPosterIndex, setCurrentPosterIndex] = useState(0);
-  const touchStartXRef = useRef<number | null>(null);
 
   const openEnroll = (target: string) => {
     setEnrollTarget(target);
     setEnrollOpen(true);
   };
 
-  const enabledPosters = heroPosters.filter((p) => p.enabled);
-
-  useEffect(() => {
-    if (!enabledPosters.length) return;
-    const timer = setTimeout(() => {
-      setCurrentPosterIndex((prev) => (prev + 1) % enabledPosters.length);
-    }, 3000);
-    return () => clearTimeout(timer);
-  }, [currentPosterIndex, enabledPosters.length]);
-
-  const goToNextPoster = () => {
-    setCurrentPosterIndex((prev) => (prev + 1) % enabledPosters.length);
-  };
-
-  const goToPrevPoster = () => {
-    setCurrentPosterIndex((prev) => (prev - 1 + enabledPosters.length) % enabledPosters.length);
-  };
-
   return (
     <Layout>
-      <section className="relative overflow-hidden bg-gradient-to-br from-sky-950 via-slate-900 to-slate-950 text-primary-foreground">
-        {/* Gradient orbs */}
-        <div className="pointer-events-none absolute inset-0">
-          <motion.div
-            className="absolute -top-32 -right-24 h-64 w-64 rounded-full bg-sky-500/30 blur-3xl"
-            animate={{ y: [0, 12, 0], opacity: [0.7, 1, 0.7] }}
-            transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
-          />
-          <motion.div
-            className="absolute -bottom-20 -left-10 h-72 w-72 rounded-full bg-indigo-500/25 blur-3xl"
-            animate={{ y: [0, -10, 0], opacity: [0.6, 0.9, 0.6] }}
-            transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
-          />
-        </div>
-
-        {/* Hero Poster */}
-        {enabledPosters.length > 0 && (
-          <div className="pointer-events-none absolute inset-x-0 top-4 md:top-6 z-20">
-            <div className="pointer-events-auto max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
-              <div
-                className="relative group"
-                onTouchStart={(e) => (touchStartXRef.current = e.touches[0].clientX)}
-                onTouchEnd={(e) => {
-                  const start = touchStartXRef.current;
-                  if (start == null) return;
-                  const delta = e.changedTouches[0].clientX - start;
-                  if (delta > 40) goToPrevPoster();
-                  if (delta < -40) goToNextPoster();
-                  touchStartXRef.current = null;
-                }}
-              >
-                <div className="bg-background/95 backdrop-blur-lg rounded-xl shadow-xl border border-white/10 p-2">
-                  <Link to={`/test-series/${enabledPosters[currentPosterIndex].testSeriesId}`}>
-                    <motion.img
-                      key={enabledPosters[currentPosterIndex].id}
-                      src={enabledPosters[currentPosterIndex].imageUrl}
-                      className="w-full h-32 md:h-40 object-cover rounded-lg"
-                      initial={{ opacity: 0, x: 20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                    />
-                  </Link>
-
-                  {enabledPosters.length > 1 && (
-                    <>
-                      <div className="absolute inset-y-0 left-0 right-0 flex items-center justify-between px-2">
-                        <button
-                          type="button"
-                          onClick={goToPrevPoster}
-                          className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-background/80 text-foreground shadow hover:bg-background"
-                        >
-                          ‹
-                        </button>
-                        <button
-                          type="button"
-                          onClick={goToNextPoster}
-                          className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-background/80 text-foreground shadow hover:bg-background"
-                        >
-                          ›
-                        </button>
-                      </div>
-
-                      <div className="absolute -bottom-3 inset-x-0 flex justify-center gap-1.5">
-                        {enabledPosters.map((p, index) => (
-                          <button
-                            key={p.id}
-                            type="button"
-                            onClick={() => setCurrentPosterIndex(index)}
-                            className={`h-1.5 rounded-full transition-[width,transform,opacity,background-color] duration-300 ease-out ${
-                              index === currentPosterIndex
-                                ? "w-6 bg-sky-500 opacity-100 scale-110"
-                                : "w-2 bg-sky-200 opacity-60 scale-100"
-                            }`}
-                          />
-                        ))}
-                      </div>
-                    </>
-                  )}
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Hero content */}
-        <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 pt-44 pb-20 md:pt-52 md:pb-28 relative z-10">
-          <div className="grid md:grid-cols-2 lg:grid-cols-[minmax(0,2fr)_minmax(0,1.3fr)] gap-10 items-center">
+      {/* Modern Light EdTech Hero Section */}
+      <section 
+        className="relative overflow-hidden py-[90px] pb-20 md:pb-[80px]"
+        style={{
+          background: 'linear-gradient(180deg, #F7FBFF 0%, #FFFFFF 100%)'
+        }}
+      >
+        {/* Container */}
+        <div className="max-w-[1200px] mx-auto px-4 md:px-6 lg:px-8">
+          {/* Two-column responsive layout */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12 items-center">
+            {/* LEFT SIDE: Content */}
             <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.4 }}
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              className="flex flex-col justify-center"
             >
-              <p className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-xs font-medium backdrop-blur">
-                Premium coaching for CBSE • SSC • JEE • NEET • CET
-              </p>
-              <h1 className="mt-4 text-3xl md:text-4xl font-bold leading-tight">
-                A focused coaching institute
-                <span className="block text-sky-300">
-                  for serious school & competitive prep.
-                </span>
+              {/* Headline */}
+              <h1 className="text-[36px] md:text-[56px] font-bold leading-[1.15] text-[#0F172A] mb-[18px]">
+                A focused coaching institute for{' '}
+                <span className="text-[#2EA7FF]">serious school & competitive prep.</span>
               </h1>
-              <p className="mt-4 text-sm md:text-base text-sky-100/80 max-w-xl">
-                Saraswati Classes offers structured classroom programs, test
-                series and personalised mentoring for students aiming for top
-                scores in boards and entrance exams.
+
+              {/* Description */}
+              <p className="text-[18px] text-[#475569] max-w-[540px] mb-8">
+                Saraswati Classes offers structured classroom programs, test series and personalised mentoring for students aiming for top scores in boards and entrance exams.
               </p>
-              <div className="mt-6 flex flex-wrap gap-3">
+
+              {/* Buttons */}
+              <div className="flex flex-col sm:flex-row gap-4">
+                {/* Primary Button */}
                 <Link to="/courses">
-                  <Button size="lg" className="gap-2 shadow-lg shadow-sky-500/30">
+                  <button
+                    className="px-7 py-[14px] bg-[#2EA7FF] text-white font-semibold rounded-[10px] shadow-[0_4px_12px_rgba(46,167,255,0.25)] hover:bg-[#0D9AE6] transition-colors inline-flex items-center gap-2"
+                  >
                     Explore Courses
                     <ArrowRight className="h-4 w-4" />
-                  </Button>
+                  </button>
                 </Link>
+
+                {/* Secondary Button */}
                 <Link to="/test-series">
-                  <Button
-                    size="lg"
-                    variant="outline"
-                    className="border-sky-300/60 text-sky-50 hover:bg-sky-900/40"
+                  <button
+                    className="px-7 py-[14px] bg-white border border-[#E2E8F0] text-[#0F172A] font-semibold rounded-[10px] hover:bg-[#F8FAFC] transition-colors"
                   >
                     View Test Series
-                  </Button>
+                  </button>
                 </Link>
               </div>
             </motion.div>
 
-            <div className="relative rounded-3xl bg-background/5 border border-white/10 backdrop-blur-xl shadow-2xl px-6 py-5 space-y-4">
-              <p className="text-xs font-semibold text-sky-100/80 uppercase tracking-wide">
-                Results Snapshot
-              </p>
-              <div className="grid grid-cols-2 gap-4 text-sm">
-                <div>
-                  <p className="text-2xl font-bold text-sky-200">95%+</p>
-                  <p className="text-sky-100/80">Board exam success rate</p>
-                </div>
-                <div>
-                  <p className="text-2xl font-bold text-sky-200">50+</p>
-                  <p className="text-sky-100/80">Students in top merit lists</p>
-                </div>
-                <div>
-                  <p className="text-2xl font-bold text-sky-200">10+</p>
-                  <p className="text-sky-100/80">Years of focused teaching</p>
-                </div>
-                <div>
-                  <p className="text-2xl font-bold text-sky-200">4</p>
-                  <p className="text-sky-100/80">Dedicated test series tracks</p>
+            {/* RIGHT SIDE: Empty Illustration Container (Future Image Space) */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+              className="hidden md:flex items-center justify-center"
+            >
+              <div className="w-full aspect-square bg-gradient-to-br from-[#F0F7FF] to-[#E8EFFE] rounded-2xl border border-[#E2E8F0] flex items-center justify-center min-h-[400px]">
+                <div className="text-center text-[#94A3B8]">
+                  <Monitor className="h-16 w-16 mx-auto mb-4 text-[#CBD5E1]" />
+                  <p className="text-sm font-medium">Illustration Space</p>
                 </div>
               </div>
-            </div>
+            </motion.div>
           </div>
         </div>
       </section>

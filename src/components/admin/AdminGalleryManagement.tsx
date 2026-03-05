@@ -161,7 +161,7 @@ const AdminGalleryManagement = () => {
       </Card>
 
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-        <DialogContent>
+        <DialogContent className="max-h-[85vh] overflow-hidden flex flex-col">
           <DialogHeader>
             <DialogTitle className="text-sm">
               {editing?.id ? "Edit Gallery Item" : "Add Gallery Item"}
@@ -169,7 +169,8 @@ const AdminGalleryManagement = () => {
           </DialogHeader>
 
           {editing && (
-            <div className="space-y-3 mt-2">
+            <div className="flex flex-col flex-1 overflow-hidden">
+            <div className="space-y-3 mt-2 overflow-y-auto pr-3">
               <div className="space-y-1">
                 <Label htmlFor="gallery-category-input">Category</Label>
                 <Input
@@ -221,6 +222,7 @@ const AdminGalleryManagement = () => {
                   Save
                 </Button>
               </div>
+            </div>
             </div>
           )}
         </DialogContent>

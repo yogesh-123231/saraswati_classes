@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Pencil, Trash2, Plus, ListPlus } from "lucide-react";
+import { Pencil, Trash2, Plus, ListPlus, X } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -76,6 +76,10 @@ const AdminCourseManagement = () => {
     testDescription: "",
     testLink: "",
   });
+  const [editingChapterId, setEditingChapterId] = useState<string | null>(null);
+  const [editingChapterData, setEditingChapterData] = useState<
+    Omit<Chapter, "id" | "chapterNumber"> | null
+  >(null);
 
   useEffect(() => {
     setCourses(fetchCourses());
@@ -178,6 +182,42 @@ const AdminCourseManagement = () => {
       testDescription: "",
       testLink: "",
     });
+  };
+
+  const handleEditChapter = (chapter: Chapter) => {
+    setEditingChapterId(chapter.id);
+    setEditingChapterData({
+      chapterDescription: chapter.chapterDescription,
+      youtubeLink: chapter.youtubeLink,
+      testDescription: chapter.testDescription,
+      testLink: chapter.testLink,
+    });
+  };
+
+  const handleUpdateChapter = (chapterId: string) => {
+    if (!editingChapterData) return;
+    setChapterDrafts((prev) =>
+      prev.map((ch) =>
+        ch.id === chapterId
+          ? { ...ch, ...editingChapterData }
+          : ch
+      )
+    );
+    setEditingChapterId(null);
+    setEditingChapterData(null);
+  };
+
+  const handleDeleteChapter = (chapterId: string) => {
+    setChapterDrafts((prev) => prev.filter((ch) => ch.id !== chapterId));
+    if (editingChapterId === chapterId) {
+      setEditingChapterId(null);
+      setEditingChapterData(null);
+    }
+  };
+
+  const handleCancelChapterEdit = () => {
+    setEditingChapterId(null);
+    setEditingChapterData(null);
   };
 
   const handleSaveChapters = () => {
@@ -284,7 +324,7 @@ const AdminCourseManagement = () => {
       </Card>
 
       <Dialog open={courseDialogOpen} onOpenChange={setCourseDialogOpen}>
-        <DialogContent>
+        <DialogContent className="max-h-[85vh] overflow-hidden flex flex-col">
           <DialogHeader>
             <DialogTitle className="text-sm">
               {editingCourse?.id ? "Edit Course" : "Add Course"}
@@ -292,7 +332,8 @@ const AdminCourseManagement = () => {
           </DialogHeader>
 
           {editingCourse && (
-            <div className="space-y-3 mt-2">
+            <div className="flex flex-col flex-1 overflow-hidden">
+            <div className="space-y-3 mt-2 overflow-y-auto pr-3">
               <div className="space-y-1">
                 <Label htmlFor="course-title-input">Course Title</Label>
                 <Input
@@ -408,37 +449,156 @@ const AdminCourseManagement = () => {
                 </Button>
               </div>
             </div>
+            </div>
           )}
         </DialogContent>
       </Dialog>
 
       <Dialog open={chapterDialogOpen} onOpenChange={setChapterDialogOpen}>
-        <DialogContent className="max-w-2xl">
+        <DialogContent className="max-w-2xl max-h-[85vh] overflow-hidden flex flex-col">
           <DialogHeader>
             <DialogTitle className="text-sm">Manage Chapters</DialogTitle>
           </DialogHeader>
-          <div className="space-y-4 mt-2">
-            <div className="space-y-2 max-h-64 overflow-auto pr-1">
+          <div className="flex flex-col flex-1 overflow-hidden">
+          <div className="space-y-4 mt-2 overflow-y-auto pr-3">
+            <div className="space-y-2">
               {chapterDrafts.map((ch) => (
-                <div
-                  key={ch.id}
-                  className="rounded-lg border border-dashed bg-muted/60 px-3 py-2 space-y-1"
-                >
-                  <p className="text-xs font-semibold">
-                    Chapter {ch.chapterNumber}
-                  </p>
-                  <p className="text-xs text-muted-foreground">
-                    {ch.chapterDescription}
-                  </p>
-                  {ch.youtubeLink && (
-                    <p className="text-[11px] text-muted-foreground">
-                      YouTube: {ch.youtubeLink}
-                    </p>
-                  )}
-                  {ch.testLink && (
-                    <p className="text-[11px] text-muted-foreground">
-                      Test: {ch.testLink}
-                    </p>
+                <div key={ch.id}>
+                  {editingChapterId === ch.id ? (
+                    <div className="rounded-lg border bg-blue-50 px-3 py-3 space-y-2">
+                      <div className="flex items-center justify-between mb-2">
+                        <p className="text-xs font-semibold">
+                          Editing Chapter {ch.chapterNumber}
+                        </p>
+                        <Button
+                          size="icon"
+                          variant="ghost"
+                          className="h-5 w-5"
+                          onClick={handleCancelChapterEdit}
+                        >
+                          <X className="h-3 w-3" />
+                        </Button>
+                      </div>
+                      <div className="space-y-2 text-xs">
+                        <div>
+                          <Label htmlFor={`edit-ch-desc-${ch.id}`} className="text-xs">Chapter Description</Label>
+                          <textarea
+                            id={`edit-ch-desc-${ch.id}`}
+                            className="w-full rounded border border-input bg-white px-2 py-1 text-xs resize-none"
+                            rows={2}
+                            value={editingChapterData?.chapterDescription || ""}
+                            onChange={(e) =>
+                              setEditingChapterData((prev) =>
+                                prev
+                                  ? { ...prev, chapterDescription: e.target.value }
+                                  : prev
+                              )
+                            }
+                          />
+                        </div>
+                        <div>
+                          <Label htmlFor={`edit-ch-yt-${ch.id}`} className="text-xs">YouTube Link</Label>
+                          <Input
+                            id={`edit-ch-yt-${ch.id}`}
+                            className="text-xs h-8"
+                            value={editingChapterData?.youtubeLink || ""}
+                            onChange={(e) =>
+                              setEditingChapterData((prev) =>
+                                prev
+                                  ? { ...prev, youtubeLink: e.target.value }
+                                  : prev
+                              )
+                            }
+                          />
+                        </div>
+                        <div>
+                          <Label htmlFor={`edit-ch-test-desc-${ch.id}`} className="text-xs">Test Description</Label>
+                          <Input
+                            id={`edit-ch-test-desc-${ch.id}`}
+                            className="text-xs h-8"
+                            value={editingChapterData?.testDescription || ""}
+                            onChange={(e) =>
+                              setEditingChapterData((prev) =>
+                                prev
+                                  ? { ...prev, testDescription: e.target.value }
+                                  : prev
+                              )
+                            }
+                          />
+                        </div>
+                        <div>
+                          <Label htmlFor={`edit-ch-test-link-${ch.id}`} className="text-xs">Google Form Link</Label>
+                          <Input
+                            id={`edit-ch-test-link-${ch.id}`}
+                            className="text-xs h-8"
+                            value={editingChapterData?.testLink || ""}
+                            onChange={(e) =>
+                              setEditingChapterData((prev) =>
+                                prev
+                                  ? { ...prev, testLink: e.target.value }
+                                  : prev
+                              )
+                            }
+                          />
+                        </div>
+                      </div>
+                      <div className="flex justify-end gap-2 pt-1">
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          className="h-7 text-xs"
+                          onClick={handleCancelChapterEdit}
+                        >
+                          Cancel
+                        </Button>
+                        <Button
+                          size="sm"
+                          className="h-7 text-xs"
+                          onClick={() => handleUpdateChapter(ch.id)}
+                        >
+                          Update
+                        </Button>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="rounded-lg border border-dashed bg-muted/60 px-3 py-2 space-y-1 flex items-start justify-between">
+                      <div className="flex-1 space-y-1">
+                        <p className="text-xs font-semibold">
+                          Chapter {ch.chapterNumber}
+                        </p>
+                        <p className="text-xs text-muted-foreground">
+                          {ch.chapterDescription}
+                        </p>
+                        {ch.youtubeLink && (
+                          <p className="text-[11px] text-muted-foreground">
+                            YouTube: {ch.youtubeLink}
+                          </p>
+                        )}
+                        {ch.testLink && (
+                          <p className="text-[11px] text-muted-foreground">
+                            Test: {ch.testLink}
+                          </p>
+                        )}
+                      </div>
+                      <div className="flex gap-1 ml-2">
+                        <Button
+                          size="icon"
+                          variant="outline"
+                          className="h-7 w-7"
+                          onClick={() => handleEditChapter(ch)}
+                        >
+                          <Pencil className="h-3 w-3" />
+                        </Button>
+                        <Button
+                          size="icon"
+                          variant="destructive"
+                          className="h-7 w-7"
+                          onClick={() => handleDeleteChapter(ch.id)}
+                        >
+                          <Trash2 className="h-3 w-3" />
+                        </Button>
+                      </div>
+                    </div>
                   )}
                 </div>
               ))}
@@ -518,6 +678,7 @@ const AdminCourseManagement = () => {
                   Save All
                 </Button>
               </div>
+            </div>
             </div>
           </div>
         </DialogContent>

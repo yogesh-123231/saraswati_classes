@@ -96,7 +96,7 @@ const TestSeriesPage = () => {
                       ) && (
                         <Button
                           size="sm"
-                          className="flex-1"
+                          className="flex-1 bg-sky-700 hover:bg-sky-800"
                           onClick={() => openEnroll(ts.title)}
                         >
                           Enroll Now

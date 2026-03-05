@@ -115,7 +115,7 @@ const CoursesPage = () => {
                       {!currentStudent?.approvedCourses.includes(course.id) && (
                         <Button
                           size="sm"
-                          className="flex-1"
+                          className="flex-1 bg-sky-700 hover:bg-sky-800"
                           onClick={() => openEnroll(course.title)}
                         >
                           Enroll Now

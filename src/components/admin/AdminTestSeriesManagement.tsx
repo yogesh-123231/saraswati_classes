@@ -253,7 +253,7 @@ const AdminTestSeriesManagement = () => {
       </Card>
 
       <Dialog open={seriesDialogOpen} onOpenChange={setSeriesDialogOpen}>
-        <DialogContent>
+        <DialogContent className="max-h-[85vh] overflow-hidden flex flex-col">
           <DialogHeader>
             <DialogTitle className="text-sm">
               {editingSeries?.id ? "Edit Test Series" : "Add Test Series"}
@@ -261,7 +261,8 @@ const AdminTestSeriesManagement = () => {
           </DialogHeader>
 
           {editingSeries && (
-            <div className="space-y-3 mt-2">
+            <div className="flex flex-col flex-1 overflow-hidden">
+            <div className="space-y-3 mt-2 overflow-y-auto pr-3">
               <div className="space-y-1">
                 <Label htmlFor="ts-title-input">Title</Label>
                 <Input
@@ -353,17 +354,19 @@ const AdminTestSeriesManagement = () => {
                 </Button>
               </div>
             </div>
+            </div>
           )}
         </DialogContent>
       </Dialog>
 
       <Dialog open={testsDialogOpen} onOpenChange={setTestsDialogOpen}>
-        <DialogContent className="max-w-2xl">
+        <DialogContent className="max-w-2xl max-h-[85vh] overflow-hidden flex flex-col">
           <DialogHeader>
             <DialogTitle className="text-sm">Manage Tests</DialogTitle>
           </DialogHeader>
-          <div className="space-y-4 mt-2">
-            <div className="space-y-2 max-h-64 overflow-auto pr-1">
+          <div className="flex flex-col flex-1 overflow-hidden">
+          <div className="space-y-4 mt-2 overflow-y-auto pr-3">
+            <div className="space-y-2">
               {testsDrafts.map((test) => (
                 <div
                   key={test.id}
@@ -428,6 +431,7 @@ const AdminTestSeriesManagement = () => {
                 </Button>
               </div>
             </div>
+          </div>
           </div>
         </DialogContent>
       </Dialog>
