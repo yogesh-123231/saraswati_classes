@@ -30,7 +30,7 @@ const HomeBannerCarousel = () => {
 
   return (
     <section className="py-8 bg-secondary/40">
-      <div className="max-w-5xl mx-auto px-4 md:px-6 lg:px-8">
+      <div className="max-w-[1200px] mx-auto px-4 md:px-6 lg:px-8">
         <Card className="overflow-hidden rounded-xl shadow-sm">
           <CardContent className="p-0 flex flex-col md:flex-row items-stretch">
             <Link

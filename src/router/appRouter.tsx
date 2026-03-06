@@ -10,6 +10,7 @@ import StudentDashboard from "@/pages/StudentDashboard";
 import AboutPage from "@/pages/AboutPage";
 import ContactPage from "@/pages/ContactPage";
 import GalleryPage from "@/pages/GalleryPage";
+import BlogPage from "@/pages/BlogPage";   // ✅ add this
 import NotFound from "@/pages/NotFound";
 import ProtectedRoute from "@/components/ProtectedRoute";
 
@@ -21,6 +22,7 @@ export const AppRouter = () => (
     <Route path="/test-series" element={<TestSeriesPage />} />
     <Route path="/test-series/:id" element={<TestSeriesDetailPage />} />
     <Route path="/login" element={<LoginPage />} />
+
     <Route
       path="/admin"
       element={
@@ -29,6 +31,7 @@ export const AppRouter = () => (
         </ProtectedRoute>
       }
     />
+
     <Route
       path="/dashboard"
       element={
@@ -37,12 +40,16 @@ export const AppRouter = () => (
         </ProtectedRoute>
       }
     />
+
     <Route path="/about" element={<AboutPage />} />
     <Route path="/gallery" element={<GalleryPage />} />
+
+    {/* BLOG PAGE */}
+    <Route path="/blog" element={<BlogPage />} />
+
     <Route path="/contact" element={<ContactPage />} />
     <Route path="*" element={<NotFound />} />
   </Routes>
 );
 
 export default AppRouter;
-

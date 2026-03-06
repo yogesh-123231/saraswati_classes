@@ -18,6 +18,9 @@ import EnrollmentModal from "@/components/EnrollmentModal";
 import { useApp } from "@/context/AppContext";
 import { testimonials } from "@/data/mockData";
 import HomeBannerCarousel from "@/components/banner/HomeBannerCarousel";
+import StudentSlider from "@/components/StudentSlider";
+import PopupBanner from "@/components/PopupBanner";
+import AboutOverview from "@/components/AboutOverview";
 
 import useEmblaCarousel from "embla-carousel-react";
 
@@ -69,10 +72,11 @@ const Index = () => {
 
   return (
     <Layout>
-      {/* Modern Light EdTech Hero Section */}
-      {/* Modern Light EdTech Hero Section */}
+      <PopupBanner />
+      
+     {/* Modern Light EdTech Hero Section */}
 <section
-  className="relative overflow-hidden py-[80px] md:py-[90px]"
+  className="relative overflow-hidden pt-8 pb-[80px] md:pt-10 md:pb-[90px]"
   style={{
     background: "linear-gradient(180deg, #F7FBFF 0%, #FFFFFF 100%)",
   }}
@@ -120,31 +124,43 @@ const Index = () => {
 
       {/* RIGHT SIDE IMAGE */}
       <motion.div
-        initial={{ opacity: 0, scale: 0.96 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.6 }}
-        className="relative flex items-center justify-center"
-      >
-        {/* Glow */}
-        <div className="absolute w-[420px] h-[420px] bg-[#2EA7FF]/20 rounded-full blur-3xl"></div>
+  initial={{ opacity: 0, scale: 0.96 }}
+  animate={{ opacity: 1, scale: 1 }}
+  transition={{ duration: 0.6 }}
+  className="relative flex items-center justify-center"
+>
 
-        {/* Student Image */}
-        <img
-          src={heroImage}
-          alt="Student"
-          className="relative z-10 w-[380px] md:w-[420px] object-contain"
-        />
+  {/* Glow Background */}
+  <div className="absolute w-[420px] h-[420px] bg-[#2EA7FF]/20 rounded-full blur-3xl"></div>
 
-        {/* Floating Card 1 */}
-        <div className="absolute top-8 left-0 bg-white rounded-xl shadow-lg px-4 py-2 text-sm font-medium">
-          70+ Available Courses
-        </div>
+  {/* Student Image */}
+  <img
+    src={heroImage}
+    alt="Student"
+    className="relative z-10 w-[400px] md:w-[440px] object-contain"
+  />
 
-        {/* Floating Card 2 */}
-        <div className="absolute top-16 right-0 bg-white rounded-xl shadow-lg px-4 py-2 text-sm font-medium">
-          10k+ Students
-        </div>
-      </motion.div>
+  {/* Card 1 */}
+  <div className="absolute z-20 top-6 left-0 bg-white/95 backdrop-blur-md rounded-xl shadow-lg px-4 py-2 text-sm font-semibold text-slate-700 border border-slate-200 animate-float">
+    📚 70+ Courses
+  </div>
+
+  {/* Card 2 */}
+  <div className="absolute z-20 top-16 right-0 bg-white/95 backdrop-blur-md rounded-xl shadow-lg px-4 py-2 text-sm font-semibold text-slate-700 border border-slate-200 animate-float-delay">
+    👨‍🎓 10k+ Students
+  </div>
+
+  {/* Card 3 */}
+  <div className="absolute z-20 bottom-20 left-2 bg-white/95 backdrop-blur-md rounded-xl shadow-lg px-4 py-2 text-sm font-semibold text-slate-700 border border-slate-200 animate-float">
+    🎯 CET • NEET • JEE
+  </div>
+
+  {/* Card 4 */}
+  <div className="absolute z-20 bottom-4 right-10 bg-white/95 backdrop-blur-md rounded-xl shadow-lg px-4 py-2 text-sm font-semibold text-slate-700 border border-slate-200 animate-float-delay">
+    ⭐ 95% Success Rate
+  </div>
+
+</motion.div>
 
     </div>
   </div>
@@ -152,9 +168,12 @@ const Index = () => {
 
       <HomeBannerCarousel />
 
+      {/* Student Slider */}
+      <StudentSlider />
+
       {/* Programs We Offer */}
       <section className="py-12 md:py-16 bg-background">
-        <div className="space-y-8">
+        <div className="max-w-[1200px] mx-auto px-4 md:px-6 lg:px-8 space-y-8">
           <div className="text-center space-y-2">
             <h2 className="text-2xl font-semibold">
               Programs We Offer
@@ -374,104 +393,178 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Explore Courses */}
-      <section className="py-12 md:py-16 bg-secondary/40">
-        <div className="space-y-8">
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-            <div className="space-y-1">
-              <h2 className="text-2xl font-semibold">Explore Courses</h2>
-              <p className="text-muted-foreground">
-                A quick look at some of our key batches for this academic year.
-              </p>
-            </div>
-            <Link to="/courses">
-              <Button variant="outline" size="sm" className="gap-2 shrink-0">
-                <span>View All Courses</span>
-                <ArrowRight className="h-3 w-3" />
-              </Button>
-            </Link>
-          </div>
+      
 
-          <div className="grid md:grid-cols-3 gap-6">
-            {courses.slice(0, 3).map((course) => (
-              <Card key={course.id} className="card-hover h-full flex flex-col rounded-xl shadow-sm overflow-hidden">
-                <CardContent className="p-6 flex flex-col flex-1">
-                  <div className="flex items-center gap-2 mb-2">
-                    <Badge variant="secondary">{course.category}</Badge>
-                    <Badge variant="outline">{course.mode}</Badge>
-                  </div>
-                  <h3 className="font-semibold text-lg mb-1">
-                    {course.title}
-                  </h3>
-                  <p className="text-xs text-muted-foreground mb-2">
-                    {course.timing} • {course.days}
-                  </p>
-                  <p className="text-sm text-muted-foreground flex-1 line-clamp-3">
-                    {course.description}
-                  </p>
-                  <Link to={`/courses/${course.id}`} className="mt-4">
-                    <Button size="sm" variant="outline" className="w-full">
-                      View Details
-                    </Button>
-                  </Link>
-                </CardContent>
-              </Card>
-            ))}
+      {/* Explore Courses */}
+      {/* Explore Courses */}
+<section className="py-12 md:py-16 bg-secondary/40">
+  <div className="space-y-8">
+
+    {/* Header */}
+    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 max-w-5xl mx-auto">
+      <div>
+        <h2 className="text-2xl md:text-3xl font-semibold">
+          Explore Courses
+        </h2>
+        <p className="text-muted-foreground text-sm">
+          A quick look at some of our key batches for this academic year.
+        </p>
+      </div>
+
+      <Link to="/courses">
+        <Button variant="outline" size="sm" className="gap-2 shrink-0">
+          View All Courses
+          <ArrowRight className="h-4 w-4" />
+        </Button>
+      </Link>
+    </div>
+
+    {/* Cards */}
+    <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto justify-items-center">
+
+      {courses.slice(0, 3).map((course, index) => {
+
+        const cardColors = [
+          "bg-blue-100",
+          "bg-yellow-100",
+          "bg-purple-100"
+        ]
+
+        return (
+          <div
+            key={course.id}
+            className={`rounded-3xl p-7 min-h-[320px] flex flex-col justify-between transition hover:shadow-xl w-full max-w-[300px] ${cardColors[index]}`}
+          >
+
+            {/* Number */}
+            <p className="text-gray-500 font-semibold text-sm mb-5">
+              {String(index + 1).padStart(2, "0")}
+            </p>
+
+            {/* Title */}
+            <h3 className="text-lg font-semibold mb-2">
+              {course.title}
+            </h3>
+
+            {/* Timing */}
+            <p className="text-xs text-gray-600 mb-4">
+              {course.timing} • {course.days}
+            </p>
+
+            {/* Description */}
+            <ul className="text-sm text-gray-700 space-y-2">
+              <li>• {course.description}</li>
+              <li>• {course.category}</li>
+              <li>• {course.mode}</li>
+            </ul>
+
+            {/* Button */}
+            <Link to={`/courses/${course.id}`} className="mt-6">
+              <button className="w-full flex items-center justify-center gap-2 bg-blue-800 text-white py-3 rounded-full text-sm font-medium hover:bg-blue-900 transition">
+                View Details
+                <ArrowRight className="w-4 h-4"/>
+              </button>
+            </Link>
+
           </div>
-        </div>
-      </section>
+        )
+
+      })}
+
+    </div>
+  </div>
+</section>
 
       {/* Test Series Highlight */}
-      <section className="py-12 md:py-16 bg-secondary/40">
-        <div className="space-y-8">
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-            <div className="space-y-1">
-              <h2 className="text-2xl font-semibold">Test Series Highlights</h2>
-              <p className="text-muted-foreground">
-                Practice with exam-pattern tests for CBSE and CET.
-              </p>
-            </div>
-            <Link to="/test-series">
-              <Button variant="outline" size="sm" className="gap-2 shrink-0">
-                <span>View All</span>
-                <ArrowRight className="h-3 w-3" />
-              </Button>
-            </Link>
-          </div>
+      {/* Test Series Highlight */}
 
-          <div className="grid md:grid-cols-3 gap-6">
-            {testSeries.slice(0, 3).map((ts) => (
-              <Card key={ts.id} className="card-hover h-full flex flex-col rounded-xl shadow-sm overflow-hidden">
-                <img
-                  src={ts.image}
-                  alt={ts.title}
-                  className="w-full h-40 object-cover"
-                />
-                <CardContent className="p-6 flex flex-col flex-1">
-                  <h3 className="font-semibold text-lg mb-1">{ts.title}</h3>
-                  <p className="text-sm text-muted-foreground mb-4 flex-1 line-clamp-3">
-                    {ts.overview}
-                  </p>
-                  <div className="flex gap-2">
-                    <Button size="sm" onClick={() => openEnroll(ts.title)}>
-                      Enroll Now
-                    </Button>
-                    <Link to={`/test-series/${ts.id}`}>
-                      <Button size="sm" variant="outline">
-                        View Details
-                      </Button>
-                    </Link>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+<section className="py-12 md:py-16 bg-secondary/40">
+  <div className="space-y-8">
+
+
+{/* Header */}
+<div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 max-w-5xl mx-auto">
+  <div className="space-y-1">
+    <h2 className="text-2xl md:text-3xl font-semibold">
+      Test Series Highlights
+    </h2>
+    <p className="text-muted-foreground text-sm">
+      Practice with exam-pattern tests for CBSE and CET.
+    </p>
+  </div>
+
+  <Link to="/test-series">
+    <Button variant="outline" size="sm" className="gap-2 shrink-0">
+      View All
+      <ArrowRight className="h-4 w-4" />
+    </Button>
+  </Link>
+</div>
+
+{/* Cards */}
+<div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto justify-items-center">
+
+  {testSeries.slice(0, 3).map((ts) => (
+    <Card
+      key={ts.id}
+      className="group flex flex-col rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1 w-full max-w-[300px]"
+    >
+
+      {/* Image */}
+      <div className="overflow-hidden">
+        <img
+          src={ts.image}
+          alt={ts.title}
+          className="w-full h-40 object-cover group-hover:scale-105 transition duration-300"
+        />
+      </div>
+
+      {/* Content */}
+      <CardContent className="p-5 flex flex-col flex-1">
+
+        <h3 className="font-semibold text-lg mb-2">
+          {ts.title}
+        </h3>
+
+        <p className="text-sm text-muted-foreground mb-4 flex-1 line-clamp-3">
+          {ts.overview}
+        </p>
+
+        {/* Buttons */}
+        <div className="flex gap-2 mt-auto">
+          <Button
+            size="sm"
+            className="flex-1"
+            onClick={() => openEnroll(ts.title)}
+          >
+            Enroll Now
+          </Button>
+
+          <Link to={`/test-series/${ts.id}`} className="flex-1">
+            <Button size="sm" variant="outline" className="w-full">
+              Details
+            </Button>
+          </Link>
         </div>
-      </section>
+
+      </CardContent>
+
+    </Card>
+  ))}
+
+</div>
+
+
+  </div>
+</section>
+
+      {/* About Overview */}
+      <AboutOverview />
 
       {/* Testimonials */}
       <section className="py-16 md:py-20 bg-background">
-        <div className="text-center space-y-4">
+        <div className="max-w-[1200px] mx-auto px-4 md:px-6 lg:px-8">
+          <div className="text-center space-y-4">
           <h2 className="text-3xl md:text-4xl font-semibold text-[#0F172A]">
             Don't take our word for it. Hear it from our students.
           </h2>
@@ -515,37 +608,14 @@ const Index = () => {
             </div>
           </div>
         </div>
-      </section>
-
-      {/* CTA */}
-      <section className="py-12 md:py-16 bg-secondary/60">
-        <div className="rounded-xl bg-background shadow-sm p-6 md:p-10 flex flex-col md:flex-row items-center justify-between gap-6">
-          <div className="space-y-2">
-            <h2 className="text-2xl font-semibold">
-              Ready to start your journey?
-            </h2>
-            <p className="text-muted-foreground max-w-xl">
-                Explore our curated courses and test series to kickstart your preparation
-                with expert guidance.
-              </p>
-            </div>
-            <Link to="/courses">
-              <Button size="lg" className="gap-2">
-                View Courses <ArrowRight className="h-4 w-4" />
-              </Button>
-            </Link>
         </div>
       </section>
 
-      <EnrollmentModal
-        open={enrollOpen}
-        onClose={() => setEnrollOpen(false)}
-        courseOrSeries={enrollTarget}
-      />
-
+      {/* CTA */}
+      
       {/* Map section above footer */}
       <section className="py-12 md:py-16 bg-background">
-        <div className="space-y-6">
+        <div className="max-w-[1200px] mx-auto px-4 md:px-6 lg:px-8 space-y-6">
           <div className="space-y-2 text-center">
             <h2 className="text-2xl font-semibold">Visit Our Centre</h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">

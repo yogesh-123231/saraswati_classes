@@ -4,9 +4,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent } from "@/components/ui/card";
-import { GraduationCap } from "lucide-react";
 import Layout from "@/components/Layout";
 import { useAuth } from "@/context/AuthContext";
+import logo from "@/assets/logo.png";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
@@ -41,7 +41,7 @@ const LoginPage = () => {
             <CardContent className="p-6 md:p-8">
               <div className="text-center mb-6 space-y-2">
                 <div className="flex justify-center">
-                  <GraduationCap className="h-12 w-12 text-primary shrink-0" />
+                  <img src={logo} alt="Saraswati Classes Logo" className="h-12 w-auto object-contain" />
                 </div>
                 <h1 className="text-3xl md:text-4xl font-bold">Login</h1>
                 <p className="text-muted-foreground">Sign in as Admin or Student</p>

@@ -4,6 +4,8 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ---------------- BASE VARIABLES ---------------- */
+
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -53,6 +55,8 @@
   }
 }
 
+/* ---------------- BASE STYLES ---------------- */
+
 @layer base {
   * {
     @apply border-gray-200;
@@ -68,7 +72,10 @@
   }
 }
 
+/* ---------------- UTILITIES ---------------- */
+
 @layer utilities {
+
   .text-gradient {
     @apply bg-clip-text text-transparent bg-gradient-to-r from-sky-500 to-sky-700;
   }
@@ -80,4 +87,58 @@
   .card-hover {
     @apply rounded-xl shadow-sm transition-shadow duration-200 hover:shadow-md;
   }
+
+}
+
+/* ---------------- HERO FLOATING BADGES ---------------- */
+
+/* HERO FLOAT ANIMATION */
+
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-4px);
+  }
+
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+.animate-float {
+  animation: float 5s ease-in-out infinite;
+}
+
+.animate-float-delay {
+  animation: float 5s ease-in-out infinite;
+  animation-delay: 2s;
+}
+
+/* ---------------- STUDENT SLIDER ---------------- */
+
+@keyframes sliderScroll {
+
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-50%);
+  }
+
+}
+
+.slider-track {
+  display: flex;
+  width: max-content;
+  animation: sliderScroll 22s linear infinite;
+}
+
+/* Pause animation on hover */
+
+.group:hover .slider-track {
+  animation-play-state: paused;
 }
